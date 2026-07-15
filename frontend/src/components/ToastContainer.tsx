@@ -1,0 +1,57 @@
+import { X, CheckCircle, XCircle, Info, AlertTriangle } from 'lucide-react';
+import { Toast } from '../hooks/useToast';
+
+interface ToastContainerProps {
+  toasts: Toast[];
+  onRemove: (id: string) => void;
+}
+
+const ToastItem = ({ toast, onRemove }: { toast: Toast; onRemove: (id: string) => void }) => {
+  const icons = {
+    success: CheckCircle,
+    error: XCircle,
+    info: Info,
+    warning: AlertTriangle,
+  };
+
+  const colors = {
+    success: 'bg-green-50 border-green-200 text-green-800',
+    error: 'bg-red-50 border-red-200 text-red-800',
+    info: 'bg-blue-50 border-blue-200 text-blue-800',
+    warning: 'bg-yellow-50 border-yellow-200 text-yellow-800',
+  };
+
+  const Icon = icons[toast.type];
+
+  return (
+    <div
+      className={`
+        flex items-start p-4 rounded-lg border shadow-lg mb-2 animate-in slide-in-from-top-5
+        ${colors[toast.type]}
+      `}
+    >
+      <Icon className="h-5 w-5 mr-3 flex-shrink-0 mt-0.5" />
+      <div className="flex-1 text-sm font-medium">{toast.message}</div>
+      <button
+        onClick={() => onRemove(toast.id)}
+        aria-label="Fechar notificação"
+        className="ml-3 flex-shrink-0 text-gray-400 hover:text-gray-600"
+      >
+        <X className="h-4 w-4" aria-hidden="true" />
+      </button>
+    </div>
+  );
+};
+
+export const ToastContainer = ({ toasts, onRemove }: ToastContainerProps) => {
+  if (toasts.length === 0) return null;
+
+  return (
+    <div className="fixed top-4 right-4 z-[110] w-full max-w-sm space-y-2">
+      {toasts.map((toast) => (
+        <ToastItem key={toast.id} toast={toast} onRemove={onRemove} />
+      ))}
+    </div>
+  );
+};
+

@@ -1,0 +1,64 @@
+import { useMemo } from 'react';
+import { useTransactions } from '../context/TransactionsContext';
+import { startOfMonth } from 'date-fns';
+import { TransactionType } from '../lib/enums';
+
+export interface BudgetAlert {
+  category: string;
+  percentage: number;
+  status: 'exceeded' | 'warning' | 'ok';
+}
+
+export function useBudgetAlerts(selectedMonth: Date, categoryData: any[], totalExpense: number, totalIncome: number): BudgetAlert[] {
+  const { budgets } = useTransactions();
+
+  const budgetAlerts = useMemo(() => {
+    const monthBudgets = budgets.filter((b) => {
+      const budgetMonth = startOfMonth(b.month);
+      const selected = startOfMonth(selectedMonth);
+      return budgetMonth.getTime() === selected.getTime();
+    });
+
+    return monthBudgets
+      .map((budget): BudgetAlert => {
+        let spent = 0;
+
+        if (budget.category === 'Geral') {
+          if (budget.type === TransactionType.EXPENSE) {
+            spent = totalExpense;
+          } else {
+            spent = totalIncome;
+          }
+        } else {
+          const categoryTransactions = categoryData.find(
+            (c) => c.name === budget.category
+          );
+          spent =
+            budget.type === TransactionType.EXPENSE
+              ? categoryTransactions?.despesa || 0
+              : categoryTransactions?.receita || 0;
+        }
+
+        const percentage =
+          budget.amount > 0 ? (spent / budget.amount) * 100 : 0;
+
+        const status: 'exceeded' | 'warning' | 'ok' =
+          percentage >= 100
+            ? 'exceeded'
+            : percentage >= 80
+            ? 'warning'
+            : 'ok';
+
+        return {
+          category: budget.category,
+          percentage,
+          status,
+        };
+      })
+      .filter((b) => b.status !== 'ok');
+  }, [budgets, selectedMonth, categoryData, totalExpense, totalIncome]);
+
+  return budgetAlerts;
+}
+
+
