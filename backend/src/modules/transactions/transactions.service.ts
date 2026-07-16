@@ -1,4 +1,5 @@
 import { Prisma } from '../../generated/prisma/client.js';
+import { GoogleGenerativeAI } from '@google/generative-ai';
 import { prisma } from '../../shared/db/prisma.js';
 import { NotFoundError, BadRequestError, ForbiddenError } from '../../shared/errors/index.js';
 import {
@@ -1150,7 +1151,33 @@ export async function batchCreateTransactions(input: BatchCreateTransactionsInpu
   }
   const householdId = input.householdId;
 
-  const { transactions: transactionsData } = input;
+  let { transactions: transactionsData } = input;
+
+  // Prevent duplicates by checking externalId
+  const externalIds = transactionsData
+    .map((t: any) => t.externalId)
+    .filter(Boolean) as string[];
+
+  if (externalIds.length > 0) {
+    const existingTransactions = await prisma.transaction.findMany({
+      where: {
+        householdId,
+        externalId: { in: externalIds },
+      },
+      select: { externalId: true },
+    });
+
+    const existingExternalIds = new Set(existingTransactions.map(t => t.externalId));
+
+    transactionsData = transactionsData.filter((t: any) => {
+      if (!t.externalId) return true;
+      return !existingExternalIds.has(t.externalId);
+    });
+
+    if (transactionsData.length === 0) {
+      return { count: 0 }; // All were duplicates
+    }
+  }
 
   // Verify all accounts
   const accountIds = [...new Set(transactionsData.map((t: { accountId: string }) => t.accountId))];
@@ -1200,7 +1227,7 @@ export async function batchCreateTransactions(input: BatchCreateTransactionsInpu
   // Execute batch creation
   const result = await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
     const created = await tx.transaction.createMany({
-      data: transactionsData.map((t: { accountId: string; categoryName: string; amount: number; description?: string; date: Date; notes?: string; paid: boolean; recurringTransactionId?: string; installmentId?: string; installmentNumber?: number; totalInstallments?: number }) => {
+      data: transactionsData.map((t: any) => {
         const isInc = isIncomeForCategory(t.categoryName);
         return {
           householdId,
@@ -1216,20 +1243,42 @@ export async function batchCreateTransactions(input: BatchCreateTransactionsInpu
           ...(t.installmentId && { installmentId: t.installmentId }),
           ...(t.installmentNumber && { installmentNumber: t.installmentNumber }),
           ...(t.totalInstallments && { totalInstallments: t.totalInstallments }),
+          ...(t.externalId && { externalId: t.externalId }),
         };
       }),
     });
 
     // Update all account balances (only for paid transactions)
-    // Use centralized balance update function to ensure consistency
-    if (balanceChanges.size > 0) {
+    if (input.updateAccountBalanceTo !== undefined && accountIds.length === 1) {
+      const accountId = accountIds[0];
+      const account = await tx.account.findUnique({
+        where: { id: accountId },
+        select: { allocatedBalance: true, type: true }
+      });
+      if (account) {
+        const newTotal = new Prisma.Decimal(input.updateAccountBalanceTo);
+        const newAvailable = newTotal.minus(account.allocatedBalance);
+        await tx.account.update({
+          where: { id: accountId },
+          data: {
+            totalBalance: newTotal,
+            availableBalance: newAvailable,
+            balance: newAvailable, // legacy field
+          }
+        });
+        if (account.type === AccountType.CREDIT) {
+          await recalculateCreditCardLimit(tx, accountId);
+        }
+      }
+    } else if (balanceChanges.size > 0) {
+      // Use centralized balance update function to ensure consistency
       // Get account types for credit card limit recalculation
-      const accountIds = Array.from(balanceChanges.keys());
-      const accounts = await tx.account.findMany({
-        where: { id: { in: accountIds } },
+      const affectedAccountIds = Array.from(balanceChanges.keys());
+      const affectedAccounts = await tx.account.findMany({
+        where: { id: { in: affectedAccountIds } },
         select: { id: true, type: true },
       });
-      const accountTypeMap = new Map(accounts.map(a => [a.id, a.type]));
+      const accountTypeMap = new Map(affectedAccounts.map(a => [a.id, a.type]));
       
       await Promise.all(
         Array.from(balanceChanges.entries()).map(async ([accountId, change]) => {
@@ -2639,3 +2688,106 @@ export async function createDeallocation(input: {
   };
 }
 
+
+export async function guessCategories(householdId: string, descriptions: string[]) {
+  if (process.env.GEMINI_API_KEY && descriptions.length > 0) {
+    try {
+      const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+      const model = genAI.getGenerativeModel({ 
+        model: "gemini-2.0-flash",
+        generationConfig: { responseMimeType: "application/json" }
+      });
+      
+      const prompt = `
+        You are an expert financial categorization assistant for a Brazilian personal finance app. 
+        Given the following list of transaction descriptions (many in Portuguese, like 'Pix', 'Compra no debito', 'Uber', 'Mcdonalds', 'SPT', 'AUTOPASS', etc), 
+        return a valid JSON object where the keys are the exact descriptions and the values are the most appropriate category from the exact allowed list.
+        If you cannot determine a good category, use null. 
+        Allowed categories EXACTLY AS WRITTEN:
+        [
+          "SALARY", "FREELANCE", "INVESTMENTS", "SALES", "RENTAL_INCOME", "OTHER_INCOME", "YIELD",
+          "FOOD", "TRANSPORTATION", "HOUSING", "HEALTHCARE", "EDUCATION", "ENTERTAINMENT", "CLOTHING",
+          "UTILITIES", "SUBSCRIPTIONS", "ONLINE_SHOPPING", "GROCERIES", "RESTAURANT", "FUEL", "PHARMACY", "OTHER_EXPENSES",
+          "TRANSFER"
+        ]
+        Descriptions: ${JSON.stringify(descriptions)}
+      `;
+      
+      const result = await model.generateContent(prompt);
+      let text = result.response.text();
+      text = text.replace(/^```json\s*/i, '').replace(/\s*```$/i, '');
+      const parsed = JSON.parse(text);
+      
+      if (parsed && typeof parsed === 'object') {
+        return parsed;
+      }
+    } catch (e) {
+      console.error("Gemini classification failed, falling back to local algorithm:", e);
+    }
+  }
+
+  // Global rules
+  const globalRules: Array<{ keywords: string[], category: string }> = [
+    { keywords: ['uber', '99app', 'cabify', 'indrive', 'transporte', 'onibus', 'metro', 'autopass', 'spt pmb', 'sptrans', 'bilhete unico', 'cptm'], category: 'TRANSPORTATION' },
+    { keywords: ['ifood', 'rappi', 'mcdonalds', 'z delivery', 'bk', 'burger king', 'restaurante', 'padaria', 'lanchonete', 'pizza', 'pizzaria'], category: 'ALIMENTACAO' },
+    { keywords: ['netflix', 'spotify', 'amazon prime', 'disney+', 'hbo', 'ass', 'youtube premium', 'apple', 'google play', 'globoplay'], category: 'SUBSCRIPTIONS' },
+    { keywords: ['enel', 'sabesp', 'light', 'neoenergia', 'agua', 'luz', 'energia', 'gas', 'internet', 'claro', 'vivo', 'tim', 'oi'], category: 'UTILITIES' },
+    { keywords: ['mercado', 'supermercado', 'carrefour', 'extra', 'pao de acucar', 'atacadao', 'assai', 'atacadista'], category: 'GROCERIES' },
+    { keywords: ['farmacia', 'drogasil', 'droga raia', 'pague menos', 'drogarias'], category: 'PHARMACY' }
+  ];
+
+  const results: Record<string, string | null> = {};
+
+  for (const desc of descriptions) {
+    const lowerDesc = desc.toLowerCase();
+    let guessedCategory = null;
+
+    // 1. Try global rules
+    for (const rule of globalRules) {
+      if (rule.keywords.some(kw => lowerDesc.includes(kw))) {
+        // Map to valid category name, in this system ALIMENTACAO is FOOD
+        const mapCategory: Record<string, string> = {
+          'ALIMENTACAO': 'FOOD',
+          'TRANSPORTATION': 'TRANSPORTATION',
+          'SUBSCRIPTIONS': 'SUBSCRIPTIONS',
+          'UTILITIES': 'UTILITIES',
+          'GROCERIES': 'GROCERIES',
+          'PHARMACY': 'PHARMACY'
+        };
+        guessedCategory = mapCategory[rule.category] || rule.category;
+        break;
+      }
+    }
+
+    // 2. Try historical data
+    if (!guessedCategory) {
+      // Find the most recent transaction in this household with a similar description
+      // For simplicity, we search for exact match or substring
+      const pastTx = await prisma.transaction.findFirst({
+        where: {
+          householdId,
+          description: {
+            contains: desc,
+            mode: 'insensitive'
+          },
+          categoryName: {
+            not: null
+          }
+        },
+        orderBy: {
+          date: 'desc'
+        },
+        select: {
+          categoryName: true
+        }
+      });
+      if (pastTx && pastTx.categoryName) {
+        guessedCategory = pastTx.categoryName;
+      }
+    }
+
+    results[desc] = guessedCategory;
+  }
+
+  return results;
+}

@@ -44,6 +44,7 @@ export enum CategoryName {
   SALES = 'SALES',
   RENTAL_INCOME = 'RENTAL_INCOME',
   OTHER_INCOME = 'OTHER_INCOME',
+  YIELD = 'YIELD',
   
   // Expense categories
   FOOD = 'FOOD',
@@ -86,6 +87,7 @@ export const CATEGORY_NAME_TO_TRANSLATION_KEY: Record<CategoryName, string> = {
   [CategoryName.SALES]: 'categorySALES',
   [CategoryName.RENTAL_INCOME]: 'categoryRENTAL_INCOME',
   [CategoryName.OTHER_INCOME]: 'categoryOTHER_INCOME',
+  [CategoryName.YIELD]: 'categoryYIELD',
   [CategoryName.FOOD]: 'categoryFOOD',
   [CategoryName.TRANSPORTATION]: 'categoryTRANSPORTATION',
   [CategoryName.HOUSING]: 'categoryHOUSING',
@@ -116,6 +118,7 @@ export const CATEGORY_NAME_DISPLAY: Record<CategoryName, string> = {
   [CategoryName.SALES]: 'Vendas',
   [CategoryName.RENTAL_INCOME]: 'Aluguel',
   [CategoryName.OTHER_INCOME]: 'Outras Receitas',
+  [CategoryName.YIELD]: 'Rendimento',
   [CategoryName.FOOD]: 'Alimentação',
   [CategoryName.TRANSPORTATION]: 'Transporte',
   [CategoryName.HOUSING]: 'Moradia',
@@ -147,6 +150,7 @@ export function getCategoriesByType(type: CategoryType): CategoryName[] {
       CategoryName.SALES,
       CategoryName.RENTAL_INCOME,
       CategoryName.OTHER_INCOME,
+      CategoryName.YIELD,
     ];
   }
   return [
@@ -271,6 +275,7 @@ export const CATEGORY_NAME_ICONS: Record<CategoryName, string> = {
   [CategoryName.SALES]: 'ShoppingBag',
   [CategoryName.RENTAL_INCOME]: 'Home',
   [CategoryName.OTHER_INCOME]: 'DollarSign',
+  [CategoryName.YIELD]: 'TrendingUp',
   
   // Expense categories
   [CategoryName.FOOD]: 'UtensilsCrossed',

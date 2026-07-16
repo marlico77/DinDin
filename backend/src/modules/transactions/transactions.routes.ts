@@ -376,6 +376,47 @@ export async function transactionRoutes(app: FastifyInstance) {
   });
 
   /**
+   * POST /transactions/categorize-guess
+   * Guess categories based on description history
+   */
+  app.post('/categorize-guess', {
+    schema: {
+      description: 'Guess categories based on description history',
+      tags: ['Transactions'],
+      security: [{ bearerAuth: [] }],
+      body: {
+        type: 'object',
+        properties: {
+          householdId: { type: 'string', format: 'uuid' },
+          descriptions: { type: 'array', items: { type: 'string' } },
+        },
+      },
+      response: {
+        200: {
+          type: 'object',
+          properties: {
+            success: { type: 'boolean' },
+            data: { type: 'object', additionalProperties: true },
+          },
+        },
+      },
+    },
+  }, async (request, reply) => {
+    // We will validate body manually since we imported categorizeGuessSchema
+    const input = request.body as any;
+    
+    const householdId = input.householdId || await ensurePersonalHousehold(request);
+    await requireHouseholdMember(request, householdId);
+
+    const result = await transactionsService.guessCategories(householdId, input.descriptions || []);
+
+    return reply.send({
+      success: true,
+      data: result,
+    });
+  });
+
+  /**
    * DELETE /transactions/batch
    * Delete multiple transactions at once (EDITOR+)
    */

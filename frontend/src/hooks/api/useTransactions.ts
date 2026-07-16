@@ -564,6 +564,7 @@ export function useBatchCreateTransactions() {
   return useMutation({
     mutationFn: async (data: {
       householdId?: string; // Optional - backend will create personal household if not provided
+      updateAccountBalanceTo?: number;
       transactions: Array<{
         description?: string;
         amount: number;
@@ -574,6 +575,7 @@ export function useBatchCreateTransactions() {
         installmentId?: string;
         installmentNumber?: number;
         totalInstallments?: number;
+        externalId?: string;
       }>;
     }) => {
       const response = await apiClient.post<{ created: number; transactions: Transaction[] }>('/transactions/batch', data);
@@ -1062,6 +1064,21 @@ export function useDashboardOverview(params: DashboardOverviewParams) {
 
       const response = await apiClient.get<DashboardOverviewData>('/dashboard/overview', queryParams);
       return response.data!;
+    },
+  });
+}
+
+/**
+ * Guess categories for imported transaction descriptions
+ */
+export function useGuessCategories() {
+  return useMutation({
+    mutationFn: async (data: {
+      householdId?: string;
+      descriptions: string[];
+    }) => {
+      const response = await apiClient.post<{ success: boolean; data: Record<string, string | null> }>('/transactions/categorize-guess', data);
+      return response.data;
     },
   });
 }

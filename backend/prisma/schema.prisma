@@ -210,6 +210,7 @@ enum CategoryName {
   SALES
   RENTAL_INCOME
   OTHER_INCOME
+  YIELD
 
   // Expense categories
   FOOD
@@ -278,6 +279,8 @@ model Transaction {
   attachmentUrl          String?         @map("attachment_url")
   // Split expense fields
   isSplit                Boolean         @default(false) @map("is_split") // Indica se a transação é dividida entre membros
+  // External sync fields
+  externalId             String?         @map("external_id") @db.VarChar(255) // ID from external bank statement (e.g. OFX FITID) to prevent duplicates
   createdAt              DateTime        @default(now()) @map("created_at")
   updatedAt              DateTime        @updatedAt @map("updated_at")
 
@@ -300,6 +303,7 @@ model Transaction {
   @@index([toAccountId])
   @@index([relatedEntityId])
   @@index([date])
+  @@index([externalId])
   @@index([recurringTransactionId])
   @@index([installmentId])
   @@map("transactions")

@@ -13,7 +13,7 @@ import { useHouseholds } from '../hooks/api/useHouseholds';
 import { type DateRange } from '../components/DateRangePicker';
 import { CategoryType } from '../lib/enums';
 import { 
-  Plus, Download,
+  Plus, Download, UploadCloud,
   Wallet, Briefcase, TrendingUp, ShoppingBag, Home, DollarSign,
   UtensilsCrossed, Car, House, Heart, GraduationCap, Film, Shirt,
   Zap, CreditCard, ShoppingCart, ShoppingBasket, Utensils, Droplet, Pill, MoreHorizontal, Circle,
@@ -21,6 +21,8 @@ import {
 } from 'lucide-react';
 import TransactionModal from '../components/TransactionModal';
 import ConfirmModal from '../components/ConfirmModal';
+import ImportTransactionsModal from '../components/transactions/ImportTransactionsModal';
+import { ImportFeatureModal } from '../components/ImportFeatureModal';
 import { Transaction } from '../types';
 import { PageButton } from '../components/PageButton';
 import { CategoryName, getCategoryIconName, getCategoryDisplayName, TransactionType } from '../lib/enums';
@@ -50,6 +52,7 @@ const Transactions = () => {
   const { data: households } = useHouseholds();
   const [searchParams, setSearchParams] = useSearchParams();
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [isImportModalOpen, setIsImportModalOpen] = useState<boolean>(false);
   const [editingTransaction, setEditingTransaction] = useState<Transaction | null>(null);
   const [viewingTransaction, setViewingTransaction] = useState<Transaction | null>(null);
   const [searchInput, setSearchInput] = useState<string>(''); // Input value (updates immediately)
@@ -58,6 +61,14 @@ const Transactions = () => {
   const [tempDateRange, setTempDateRange] = useState<DateRange>({ startDate: null, endDate: null }); // Temporary date range (while user is selecting)
   // cursor não é mais necessário no estado - é gerenciado pelo React Query cache
   const [activeTab, setActiveTab] = useState<'transactions' | 'scheduled'>('transactions');
+  const [showImportFeatureModal, setShowImportFeatureModal] = useState(false);
+  
+  useEffect(() => {
+    const seen = localStorage.getItem('importFeatureModalSeen_v1');
+    if (!seen) {
+      setShowImportFeatureModal(true);
+    }
+  }, []);
   
   // Inicializar filtro de tipo a partir dos query params
   const getInitialTypeFilter = () => {
@@ -692,6 +703,14 @@ const Transactions = () => {
             CSV
           </PageButton>
           <PageButton
+            onClick={() => setIsImportModalOpen(true)}
+            variant="secondary"
+            icon={UploadCloud}
+            aria-label="Importar Extrato"
+          >
+            Importar
+          </PageButton>
+          <PageButton
             onClick={handleAdd}
             variant="primary"
             icon={Plus}
@@ -719,6 +738,15 @@ const Transactions = () => {
               className="flex-1"
             >
               CSV
+            </PageButton>
+            <PageButton
+              onClick={() => setIsImportModalOpen(true)}
+              variant="secondary"
+              icon={UploadCloud}
+              aria-label="Importar Extrato"
+              className="flex-1"
+            >
+              Importar
             </PageButton>
           </div>
         </div>
@@ -862,9 +890,19 @@ const Transactions = () => {
         message={`${t.delete} ${t.transaction?.toLowerCase() || t.transactions.toLowerCase()}?`}
         variant="danger"
       />
+
+      <ImportTransactionsModal
+        isOpen={isImportModalOpen}
+        onClose={() => setIsImportModalOpen(false)}
+      />
+      
+      <ImportFeatureModal
+        isOpen={showImportFeatureModal}
+        onClose={() => setShowImportFeatureModal(false)}
+      />
     </div>
   );
 };
 
-export default Transactions;
 
+export default Transactions;

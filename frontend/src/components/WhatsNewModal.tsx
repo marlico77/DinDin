@@ -178,8 +178,6 @@ export const WhatsNewModal = ({ isOpen, onClose }: WhatsNewModalProps) => {
                   </ul>
                 </div>
               </div>
-            </div>
-
             {/* DinDin Web é grátis */}
             <div className="p-4 bg-green-50 dark:bg-green-900/20 border-2 border-green-400 dark:border-green-600 rounded-lg">
               <div className="flex items-start space-x-3">
@@ -196,8 +194,9 @@ export const WhatsNewModal = ({ isOpen, onClose }: WhatsNewModalProps) => {
                 </div>
               </div>
             </div>
+          </div>
 
-            {/* Footer com Checkbox - Dentro do conteúdo scrollável */}
+          {/* Footer com Checkbox - Dentro do conteúdo scrollável */}
             <div className="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700">
               {!hasScrolledToEnd && (
                 <div className="text-center py-4">

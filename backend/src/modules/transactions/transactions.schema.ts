@@ -165,6 +165,7 @@ export type TransactionSummaryQuery = z.infer<typeof transactionSummaryQuerySche
  */
 export const batchCreateTransactionsSchema = z.object({
   householdId: z.string().uuid().optional(), // Optional - will create personal household if not provided
+  updateAccountBalanceTo: z.number().optional(),
   transactions: z.array(
     z.object({
       accountId: z.string().uuid(),
