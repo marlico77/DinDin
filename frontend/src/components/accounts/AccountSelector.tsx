@@ -75,7 +75,7 @@ export const AccountSelector = ({
           >
             {isSharedAccount && (
               <div className="absolute top-2 right-2 flex items-center">
-                <Share2 className="h-3 w-3 text-blue-500 dark:text-blue-400" title="Conta compartilhada" />
+                <Share2 className="h-3 w-3 text-blue-500 dark:text-blue-400" {...{title: "Conta compartilhada"} as any} />
               </div>
             )}
             <div

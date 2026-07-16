@@ -108,7 +108,7 @@ export const AllocationModal = ({
     // Buscar todas as transações de alocação/desalocação para esta conta e cartão
     const allocationTransactions = transactions.filter(
       (t) =>
-        t.type === "alocacao" &&
+        (t.type as any) === "alocacao" &&
         t.accountId === accountId &&
         t.relatedEntityId === selectedCreditCardId
     );

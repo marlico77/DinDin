@@ -37,7 +37,7 @@ export const useDashboardPreferences = () => {
     }
 
     if (user?.dashboardPreferences) {
-      const prefs = user.dashboardPreferences as DashboardPreferences;
+      const prefs = user.dashboardPreferences as unknown as DashboardPreferences;
       // Garantir que todos os widgets padrão existam
       const mergedWidgets = DEFAULT_WIDGETS.map(defaultWidget => {
         const savedWidget = prefs.widgets?.find(w => w.id === defaultWidget.id);

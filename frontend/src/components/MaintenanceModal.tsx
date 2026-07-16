@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { Wallet } from 'lucide-react';
 import { useI18n } from '../context/I18nContext';
 
 interface MaintenanceModalProps {

@@ -463,79 +463,62 @@ const SettingsPage = () => {
             </div>
           </div>
         ) : (
-          <div className="space-y-4">
-            {canInstall ? (
-              <button
-                onClick={async () => {
+          <div className="space-y-3">
+            <button
+              type="button"
+              onClick={async () => {
+                if (canInstall) {
                   const installed = await install();
                   if (installed) {
                     success(t.installApp || "App instalado com sucesso!");
                   }
-                }}
-                className="w-full sm:w-auto px-4 py-2.5 text-sm font-light tracking-tight text-white bg-primary-600 dark:bg-primary-500 border border-primary-600 dark:border-primary-500 rounded-lg hover:opacity-80 transition-opacity flex items-center justify-center gap-2"
-              >
-                <Download className="h-5 w-5" />
-                {t.installNow || "Instalar Agora"}
-              </button>
-            ) : (
-              <div className="space-y-3">
-                <button
-                  type="button"
-                  onClick={async () => {
-                    if (canInstall) {
-                      const installed = await install();
-                      if (installed) {
-                        success(t.installApp || "App instalado com sucesso!");
-                      }
-                    } else {
-                      if (info) {
-                        info("Seu navegador requer a instalação manual pelo menu.");
-                      }
-                    }
-                  }}
-                  className="w-full text-left flex items-start space-x-3 p-3 border border-gray-100 dark:border-gray-800 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors cursor-pointer"
-                >
-                  <Smartphone className="h-5 w-5 text-primary-600 dark:text-primary-400 flex-shrink-0 mt-0.5" />
-                  <div>
-                    <h3 className="font-medium text-gray-900 dark:text-white text-sm mb-1">
-                      {t.pwaInfoMobileTitle || "No celular"}
-                    </h3>
-                    <p className="text-xs font-light text-gray-500 dark:text-gray-400">
-                      {t.pwaInfoMobileDescription ||
-                        'Toque no menu do navegador e selecione "Adicionar à tela inicial"'}
-                    </p>
-                  </div>
-                </button>
-
-                <button
-                  type="button"
-                  onClick={async () => {
-                    if (canInstall) {
-                      const installed = await install();
-                      if (installed) {
-                        success(t.installApp || "App instalado com sucesso!");
-                      }
-                    } else {
-                      if (info) {
-                        info("Seu navegador requer a instalação manual pelo menu.");
-                      }
-                    }
-                  }}
-                  className="w-full text-left flex items-start space-x-3 p-3 border border-gray-100 dark:border-gray-800 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors cursor-pointer"
-                >
-                  <Monitor className="h-5 w-5 text-primary-600 dark:text-primary-400 flex-shrink-0 mt-0.5" />
-                  <div>
-                    <h3 className="font-medium text-gray-900 dark:text-white text-sm mb-1">
-                      {t.pwaInfoDesktopTitle || "No computador"}
-                    </h3>
-                    <p className="text-xs font-light text-gray-500 dark:text-gray-400">
-                      {t.pwaInfoDesktopDescription ||
-                        "Clique no ícone de instalação na barra de endereços ou no menu do navegador"}
-                    </p>
-                  </div>
-                </button>
+                } else {
+                  if (info) {
+                    info("Seu navegador requer a instalação manual pelo menu.");
+                  }
+                }
+              }}
+              className="w-full text-left flex items-start space-x-3 p-3 border border-gray-100 dark:border-gray-800 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors cursor-pointer"
+            >
+              <Smartphone className="h-5 w-5 text-primary-600 dark:text-primary-400 flex-shrink-0 mt-0.5" />
+              <div>
+                <h3 className="font-medium text-gray-900 dark:text-white text-sm mb-1">
+                  {t.pwaInfoMobileTitle || "No celular"}
+                </h3>
+                <p className="text-xs font-light text-gray-500 dark:text-gray-400">
+                  {t.pwaInfoMobileDescription ||
+                    'Toque no menu do navegador e selecione "Adicionar à tela inicial"'}
+                </p>
               </div>
-            )}
+            </button>
+
+            <button
+              type="button"
+              onClick={async () => {
+                if (canInstall) {
+                  const installed = await install();
+                  if (installed) {
+                    success(t.installApp || "App instalado com sucesso!");
+                  }
+                } else {
+                  if (info) {
+                    info("Seu navegador requer a instalação manual pelo menu.");
+                  }
+                }
+              }}
+              className="w-full text-left flex items-start space-x-3 p-3 border border-gray-100 dark:border-gray-800 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors cursor-pointer"
+            >
+              <Monitor className="h-5 w-5 text-primary-600 dark:text-primary-400 flex-shrink-0 mt-0.5" />
+              <div>
+                <h3 className="font-medium text-gray-900 dark:text-white text-sm mb-1">
+                  {t.pwaInfoDesktopTitle || "No computador"}
+                </h3>
+                <p className="text-xs font-light text-gray-500 dark:text-gray-400">
+                  {t.pwaInfoDesktopDescription ||
+                    "Clique no ícone de instalação na barra de endereços ou no menu do navegador"}
+                </p>
+              </div>
+            </button>
           </div>
         )}
       </div>

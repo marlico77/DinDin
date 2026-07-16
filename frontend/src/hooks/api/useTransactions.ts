@@ -140,7 +140,7 @@ export function useTransactions(params: ListTransactionsParams) {
         } as PaginatedTransactionsResponse;
       }
       // Fallback: if response is already in the correct format
-      return response as PaginatedTransactionsResponse;
+      return response as unknown as PaginatedTransactionsResponse;
     },
   });
 }
@@ -182,7 +182,7 @@ export function useLoadMoreTransactions() {
         } as PaginatedTransactionsResponse;
       }
       // Fallback: if response is already in the correct format
-      return response as PaginatedTransactionsResponse;
+      return response as unknown as PaginatedTransactionsResponse;
     },
     onSuccess: (newData, variables) => {
       // Append new data to existing cache

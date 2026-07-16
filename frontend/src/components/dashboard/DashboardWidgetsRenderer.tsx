@@ -111,8 +111,8 @@ export const DashboardWidgetsRenderer = ({
       case 'projectedBalance':
         return (
           <ProjectedBalanceWidget
-            totalProjectedBalance={totalProjectedBalance}
-            totalAvailableBalance={totalAvailableBalance}
+            totalProjectedBalance={totalProjectedBalance || 0}
+            totalAvailableBalance={totalAvailableBalance || 0}
             blurNumbers={isBlurred}
           />
         );
@@ -120,7 +120,7 @@ export const DashboardWidgetsRenderer = ({
       return (
         <BalanceEvolutionWidget
           balanceEvolution={balanceEvolution}
-          totalAvailableBalance={totalAvailableBalance}
+          totalAvailableBalance={totalAvailableBalance || 0}
           blurNumbers={isBlurred}
         />
       );
@@ -128,11 +128,11 @@ export const DashboardWidgetsRenderer = ({
       return (
         <MonthlyComparisonWidget
           monthlyComparison={monthlyComparison}
-          canGoBack={canGoBack}
-          canGoForward={canGoForward}
-          onPreviousMonths={onPreviousMonths}
-          onNextMonths={onNextMonths}
-          onResetToCurrent={onResetToCurrent}
+          canGoBack={canGoBack || false}
+          canGoForward={canGoForward || false}
+          onPreviousMonths={onPreviousMonths || (() => {})}
+          onNextMonths={onNextMonths || (() => {})}
+          onResetToCurrent={onResetToCurrent || (() => {})}
           blurNumbers={isBlurred}
         />
       );
@@ -142,8 +142,8 @@ export const DashboardWidgetsRenderer = ({
             incomeChange={incomeChange}
             expenseChange={expenseChange}
             balanceChange={balanceChange}
-            totalIncome={totalIncome}
-            totalExpense={totalExpense}
+            totalIncome={totalIncome || 0}
+            totalExpense={totalExpense || 0}
             categoryData={categoryData}
             blurNumbers={isBlurred}
           />

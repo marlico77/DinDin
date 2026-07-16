@@ -1,7 +1,7 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { apiClient, isNetworkError } from '../../utils/api';
+import { useQuery } from '@tanstack/react-query';
+import { apiClient } from '../../utils/api';
 import { useAuth } from '../../context/AuthContext';
-import { saveHouseholdToLocalStorage, loadHouseholdFromLocalStorage } from '../../utils/householdStorage';
+
 
 export interface User {
   id: string;
@@ -41,36 +41,3 @@ export function useAuthUser() {
     staleTime: 5 * 60 * 1000, // 5 minutes
   });
 }
-
-/**
- * Retry function with exponential backoff for network errors
- */
-async function retryWithBackoff<T>(
-  fn: () => Promise<T>,
-  maxRetries: number = 3,
-  initialDelay: number = 1000
-): Promise<T> {
-  let lastError: unknown;
-  
-  for (let attempt = 0; attempt <= maxRetries; attempt++) {
-    try {
-      return await fn();
-    } catch (error) {
-      lastError = error;
-      
-      // Only retry on network errors
-      if (!isNetworkError(error) || attempt === maxRetries) {
-        throw error;
-      }
-      
-      // Exponential backoff: 1s, 2s, 4s
-      const delay = initialDelay * Math.pow(2, attempt);
-      await new Promise(resolve => setTimeout(resolve, delay));
-    }
-  }
-  
-  throw lastError;
-}
-
-
-

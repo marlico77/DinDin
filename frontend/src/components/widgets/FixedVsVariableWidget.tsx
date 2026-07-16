@@ -26,7 +26,7 @@ export const FixedVsVariableWidget = ({ selectedMonth, blurNumbers = false }: Fi
     // Filtrar apenas transações de despesas (não receitas)
     const expenses = monthTransactions.filter(t => {
       if (t.type !== TransactionType.EXPENSE) return false;
-      if (t.type === TransactionType.TRANSFER || t.type === TransactionType.ALLOCATION) return false;
+
       
       if (!t.accountId) return true;
       const account = accounts.find(a => a.id === t.accountId);

@@ -163,7 +163,7 @@ export const DashboardWidgetConfig = ({ isOpen, onClose }: DashboardWidgetConfig
   const [hasChanges, setHasChanges] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
-  const [hoveredWidget, setHoveredWidget] = useState<WidgetId | null>(null);
+
   
   // Detectar tamanho da tela para mostrar previews
   const [screenWidth, setScreenWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 1024);
@@ -407,12 +407,11 @@ export const DashboardWidgetConfig = ({ isOpen, onClose }: DashboardWidgetConfig
               <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
                 {filteredWidgets.map((widget, index) => {
                   const description = getWidgetDescriptions(t)[widget.id];
-                  const _isHovered = hoveredWidget === widget.id;
+
                   return (
                     <div
                       key={widget.id}
-                      onMouseEnter={() => setHoveredWidget(widget.id)}
-                      onMouseLeave={() => setHoveredWidget(null)}
+
                       className={`relative group border rounded-lg transition-all overflow-hidden ${
                         widget.enabled
                           ? 'border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 hover:border-primary-300 dark:hover:border-primary-600 hover:shadow-lg'

@@ -109,7 +109,7 @@ const Layout = () => {
 
     // Verificar se user realmente mudou (comparando IDs)
     const userChanged = user?.id !== prevUserRef.current?.id;
-    const currentUserChanged = currentUser?.uid !== prevCurrentUserRef.current?.uid;
+    const currentUserChanged = currentUser?.id !== prevCurrentUserRef.current?.id;
     // Verificar se onboardingCompleted mudou (importante para refazer onboarding)
     const onboardingStatusChanged = user?.onboardingCompleted !== prevUserRef.current?.onboardingCompleted;
     

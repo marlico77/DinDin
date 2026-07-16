@@ -195,9 +195,8 @@ export const SplitTransactionForm = ({
                             const finalAmount = Math.max(0, Math.min(transactionAmount, parseFloat(rawValueFromInput) || 0));
                             
                             if (!isNaN(finalAmount)) {
-                              onSplitsChange(prevSplits => {
-                                const currentSplits = [...prevSplits];
-                                currentSplits[index] = { ...split, amount: finalAmount };
+                              const currentSplits = [...splits];
+                              currentSplits[index] = { ...split, amount: finalAmount };
                                 
                                 const remaining = transactionAmount - finalAmount;
                                 const otherSplits = currentSplits.filter((_, i) => i !== index);
@@ -220,8 +219,7 @@ export const SplitTransactionForm = ({
                                   }
                                 }
                                 
-                                return currentSplits;
-                              });
+                              onSplitsChange(currentSplits);
                             }
                             
                             const newValues = { ...currentLocalValues };

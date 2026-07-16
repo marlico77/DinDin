@@ -66,7 +66,7 @@ export const CreditCardModal = ({ account, onClose }: CreditCardModalProps) => {
   const { data: sharedHouseholdMembers } = useHouseholdMembers(sharedHousehold?.id || '');
   const currentMember = useMemo(() => {
     if (!sharedHouseholdMembers || !currentUser) return null;
-    return sharedHouseholdMembers.find(m => m.userId === currentUser.uid);
+    return sharedHouseholdMembers.find(m => m.userId === currentUser.id);
   }, [sharedHouseholdMembers, currentUser]);
   
   const isAccountShared = useMemo(() => {
@@ -213,7 +213,7 @@ export const CreditCardModal = ({ account, onClose }: CreditCardModalProps) => {
                 form={form}
                 creditLimitMask={creditLimitMask}
                 balanceMask={!account ? balanceMask : undefined}
-                setValue={setValue}
+                setValue={setValue as any}
                 isCreation={!account}
               />
 

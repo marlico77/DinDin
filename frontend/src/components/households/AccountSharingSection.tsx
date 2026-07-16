@@ -116,8 +116,8 @@ export const AccountSharingSection = ({
           >
             <input
               type="checkbox"
-              checked={selectedAccountIds.includes(account.id)}
-              onChange={() => onToggleAccountSelection(account.id)}
+              checked={selectedAccountIds.includes(account.id || '')}
+              onChange={() => onToggleAccountSelection(account.id || '')}
               disabled={allowPersonalAccountAccess}
               className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-200 dark:border-gray-800 rounded"
             />

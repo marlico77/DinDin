@@ -18,10 +18,10 @@ export const AccountBalanceCard = ({
   className = '',
 }: AccountBalanceCardProps) => {
   const balance = useMemo(() => {
-    return getAccountBalance(account, transactions);
+    return getAccountBalance(account);
   }, [account, transactions]);
 
-  const isPositive = balance >= 0;
+  const isPositive = (balance?.totalBalance || 0) >= 0;
 
   return (
     <div className={`bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6 ${className}`}>
@@ -56,7 +56,7 @@ export const AccountBalanceCard = ({
                 : 'text-red-600 dark:text-red-400'
             }`}
           >
-            {formatCurrency(balance, baseCurrency)}
+            {formatCurrency(balance?.totalBalance || 0, baseCurrency)}
           </span>
         </div>
       </div>

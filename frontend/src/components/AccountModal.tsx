@@ -293,7 +293,7 @@ export const AccountModal = ({ account, onClose, defaultType = AccountType.CHECK
                 account={account}
                 form={form}
                 creditLimitMask={creditLimitMask}
-                bankAccountsForLinking={bankAccountsForLinking}
+                bankAccountsForLinking={bankAccountsForLinking as any}
                 setValue={setValue}
                 isCreation={!account}
               />

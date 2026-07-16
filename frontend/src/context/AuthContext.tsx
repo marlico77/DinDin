@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState, ReactNode, useMemo, useCallback, useRef } from 'react';
+import { createContext, useContext, useEffect, useState, ReactNode, useMemo, useCallback } from 'react';
 import { AuthContextType, User } from '../types';
 import { analyticsHelpers } from '../utils/analytics';
 import { apiClient as api } from '../utils/api';

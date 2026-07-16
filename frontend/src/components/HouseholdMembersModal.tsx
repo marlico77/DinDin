@@ -73,7 +73,7 @@ export function HouseholdMembersModal({
   const isLoading = membersLoading || invitesLoading;
 
   // Find current user's membership to check their allowPersonalAccountAccess and sharedAccountIds status
-  const currentUserMembership = members?.find(m => m.userId === currentUser?.uid);
+  const currentUserMembership = members?.find(m => m.userId === currentUser?.id);
   
   // Find personal household (oldest household by createdAt)
   const personalHousehold = useMemo(() => {
@@ -360,7 +360,7 @@ export function HouseholdMembersModal({
         >
           {/* Header */}
           <HouseholdMembersModalHeader
-            isSharedHousehold={isSharedHousehold}
+            isSharedHousehold={isSharedHousehold ?? false}
             onClose={onClose}
           />
 
@@ -373,7 +373,7 @@ export function HouseholdMembersModal({
             isLoading={isLoading || invitesLoading}
             isOwner={isOwner}
             currentUser={currentUser}
-            isSharedHousehold={isSharedHousehold}
+            isSharedHousehold={isSharedHousehold ?? false}
             getRoleLabel={getRoleLabel}
             onCancelInvite={handleCancelInvite}
             onRemoveMember={handleRemoveMember}
@@ -384,7 +384,7 @@ export function HouseholdMembersModal({
           {currentUserMembership && (
             <AccountSharingSection
               isInPersonalHousehold={!isSharedHousehold}
-              isSharedHousehold={isSharedHousehold}
+              isSharedHousehold={isSharedHousehold ?? false}
               personalAccounts={personalAccounts}
               selectedAccountIds={selectedAccountIds}
               onToggleAccountSelection={handleToggleAccountSelection}

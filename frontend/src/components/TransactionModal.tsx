@@ -451,7 +451,7 @@ const TransactionModal = ({ transaction, onClose, defaultAccountId, defaultPaid,
         const newSplits = activeMembers.map((member: HouseholdMember, index: number) => {
           // Preservar accountId se já existir, senão usar default se houver apenas uma conta
           const existingSplit = splits.find(s => s.userId === member.userId);
-          const isCurrentUserMember = member.userId === (authUser?.id || currentUser?.uid);
+          const isCurrentUserMember = member.userId === (authUser?.id || currentUser?.id);
           const defaultAccountId = existingSplit?.accountId || getDefaultAccountIdForMember(member.userId, isCurrentUserMember);
           
           // O último membro recebe o restante para garantir que a soma seja exata
@@ -480,7 +480,7 @@ const TransactionModal = ({ transaction, onClose, defaultAccountId, defaultPaid,
       lastMemberCount.current = 0;
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isSplit, transactionType, isSharedHousehold, householdMembers, getDefaultAccountIdForMember, authUser?.id, currentUser?.uid]); // NÃO incluir transactionAmount e splits para não recalcular quando valor mudar (evitar sobrescrever edições manuais)
+  }, [isSplit, transactionType, isSharedHousehold, householdMembers, getDefaultAccountIdForMember, authUser?.id, currentUser?.id]); // NÃO incluir transactionAmount e splits para não recalcular quando valor mudar (evitar sobrescrever edições manuais)
 
   // Atualizar splits quando transaction é carregada (se já tiver splits)
   // Este deve rodar PRIMEIRO para carregar os splits da transação
@@ -497,7 +497,7 @@ const TransactionModal = ({ transaction, onClose, defaultAccountId, defaultPaid,
           // Se não tem accountId, tentar encontrar o membro e usar default se houver apenas uma conta
           const member = householdMembers?.find((m: HouseholdMember) => m.userId === split.userId);
           if (member) {
-            const isCurrentUserMember = member.userId === (authUser?.id || currentUser?.uid);
+            const isCurrentUserMember = member.userId === (authUser?.id || currentUser?.id);
             const defaultAccountId = getDefaultAccountIdForMember(split.userId, isCurrentUserMember);
             return {
               ...split,
@@ -516,7 +516,7 @@ const TransactionModal = ({ transaction, onClose, defaultAccountId, defaultPaid,
       setIsSplit(false);
       setSplits([]);
     }
-  }, [transaction, householdMembers, authUser?.id, currentUser?.uid, getDefaultAccountIdForMember]);
+  }, [transaction, householdMembers, authUser?.id, currentUser?.id, getDefaultAccountIdForMember]);
 
   // Desativar splits se não for mais EXPENSE em shared household
   // Este deve rodar DEPOIS para validar se os splits ainda são válidos
