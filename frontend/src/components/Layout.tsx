@@ -172,13 +172,13 @@ const Layout = () => {
           <div className={`flex items-center justify-between h-16 border-b border-gray-100 dark:border-gray-800 ${sidebarCollapsed ? 'px-4' : 'px-6'}`}>
             {!sidebarCollapsed && (
               <Link to="/home" className="flex items-center hover:opacity-80 transition-opacity">
-                <div className="logo-mask bg-primary-600 h-12 w-12 scale-125 transform origin-left flex-shrink-0" aria-label="DinDin Logo" />
+                <div className="logo-mask bg-primary-600 h-14 w-14 scale-125 transform origin-left flex-shrink-0" aria-label="DinDin Logo" />
                 <span className="ml-2 text-xl font-light text-gray-900 dark:text-white">{t.appNameWithBeta}</span>
               </Link>
             )}
             {sidebarCollapsed && (
               <Link to="/home" className="flex items-center justify-center hover:opacity-80 transition-opacity">
-                <div className="logo-mask bg-primary-600 h-10 w-10 scale-125 transform flex-shrink-0" aria-label="DinDin Logo" />
+                <div className="logo-mask bg-primary-600 h-12 w-12 scale-125 transform flex-shrink-0" aria-label="DinDin Logo" />
               </Link>
             )}
             <div className="flex items-center gap-2">

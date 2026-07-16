@@ -1,6 +1,4 @@
-import { PrismaClient } from '@prisma/client';
-
-const prisma = new PrismaClient();
+import { prisma } from '../shared/db/prisma.js';
 
 async function main() {
   console.log('Deleting all transactions...');
