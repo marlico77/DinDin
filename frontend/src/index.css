@@ -2,6 +2,17 @@
 @tailwind components;
 @tailwind utilities;
 
+.logo-mask {
+  mask-image: url('/logo.png');
+  -webkit-mask-image: url('/logo.png');
+  mask-size: contain;
+  -webkit-mask-size: contain;
+  mask-repeat: no-repeat;
+  -webkit-mask-repeat: no-repeat;
+  mask-position: center;
+  -webkit-mask-position: center;
+}
+
 /* Fix for month input on mobile - prevent overflow */
 input[type="month"] {
   width: 100% !important;

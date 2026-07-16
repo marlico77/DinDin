@@ -12,11 +12,10 @@ export const LoadingSpinner = ({ size = 48, className = '' }: LoadingSpinnerProp
   return (
     <div className={`flex items-center justify-center ${className}`}>
       <div className="relative" style={{ width: size, height: size }}>
-          <img 
-            src="/logo.png" 
-            alt="Loading" 
+          <div 
+            className="logo-mask bg-primary-600 dark:bg-primary-400 wallet-loader animate-pulse" 
             style={{ width: size, height: size }}
-            className="wallet-loader object-contain animate-pulse" 
+            aria-label="Loading" 
           />
       </div>
     </div>

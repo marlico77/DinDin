@@ -56,7 +56,7 @@ export const MaintenanceModal = ({ endTime }: MaintenanceModalProps) => {
             
             {/* Ícone de carteira no centro */}
             <div className="absolute inset-0 flex items-center justify-center">
-              <img src="/logo.png" alt="DinDin Logo" className="h-8 w-auto object-contain" />
+              <div className="logo-mask bg-primary-600 h-10 w-10 scale-125 transform flex-shrink-0" aria-label="DinDin Logo" />
             </div>
           </div>
         </div>

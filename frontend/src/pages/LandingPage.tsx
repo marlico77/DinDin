@@ -258,7 +258,7 @@ const LandingPage = () => {
               className="flex items-center hover:scale-105 transition-transform duration-200"
               onClick={() => analyticsHelpers.logLandingNavClicked('logo')}
             >
-              <img src="/logo.png" alt="DinDin Logo" className="h-12 w-auto object-contain scale-125 transform origin-left animate-pulse-slow" />
+              <div className="logo-mask bg-primary-600 dark:bg-primary-400 h-12 w-12 scale-125 transform origin-left animate-pulse-slow flex-shrink-0" aria-label="DinDin Logo" />
               <span className="ml-2 text-xl font-bold text-gray-900 dark:text-gray-100">DinDin</span>
             </Link>
             <div className="flex items-center space-x-4">
@@ -358,7 +358,7 @@ const LandingPage = () => {
                       <p className="text-sm text-gray-700 dark:text-gray-300">{t.landingTotalBalance}</p>
                       <p className="text-xl lg:text-2xl font-bold text-gray-900 dark:text-gray-100">{formatCurrency(12450, baseCurrency)}</p>
                     </div>
-                    <img src="/logo.png" alt="DinDin Logo" className="h-12 lg:h-14 w-auto object-contain scale-125 transform animate-pulse-slow flex-shrink-0" />
+                    <div className="logo-mask bg-primary-600 dark:bg-primary-400 h-12 w-12 lg:h-14 lg:w-14 scale-125 transform animate-pulse-slow flex-shrink-0" aria-label="DinDin Logo" />
                   </div>
                   <div className="grid grid-cols-2 gap-4">
                     <div className="p-4 bg-green-50 dark:bg-green-900/20 rounded-lg hover:scale-105 transition-transform duration-200 hover:shadow-md">
@@ -829,7 +829,7 @@ const LandingPage = () => {
           <div className="flex flex-col md:flex-row justify-between items-center space-y-6 md:space-y-0">
             <div className="flex flex-col items-center md:items-start space-y-4">
               <div className="flex items-center">
-                <img src="/logo.png" alt="DinDin Logo" className="h-10 w-auto object-contain mr-2 scale-125 transform origin-left" />
+                <div className="logo-mask bg-primary-400 h-10 w-10 mr-2 scale-125 transform origin-left flex-shrink-0" aria-label="DinDin Logo" />
                 <span className="text-lg font-bold">DinDin</span>
               </div>
               
