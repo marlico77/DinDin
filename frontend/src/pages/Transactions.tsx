@@ -177,7 +177,7 @@ const Transactions = () => {
             description: t.description,
             amount: typeof t.amount === 'string' ? parseFloat(t.amount) : Number(t.amount),
             type: t.type === 'TRANSFER' ? TransactionType.TRANSFER : TransactionType.ALLOCATION,
-            category: getCategoryDisplayName(categoryName as string, t as Record<string, string>, customCategories),
+            category: getCategoryDisplayName(categoryName as string, t as unknown as Record<string, string>, customCategories as any),
             categoryName: categoryName as string,
             date: parsedDate,
             paid: t.paid,
@@ -225,7 +225,7 @@ const Transactions = () => {
           description: t.description,
           amount: typeof t.amount === 'string' ? parseFloat(t.amount) : Number(t.amount),
           type: transactionType,
-          category: getCategoryDisplayName(catName, t as Record<string, string>, customCategories),
+          category: getCategoryDisplayName(catName, t as unknown as Record<string, string>, customCategories as any),
           categoryName: catName,
           date: parsedDate,
           paid: t.paid,
@@ -245,7 +245,7 @@ const Transactions = () => {
             amount: typeof split.amount === 'number' ? split.amount : Number(split.amount),
             accountId: split.accountId || undefined,
           })) : undefined,
-        };
+          } as Transaction;
       })
       .filter((t): t is Transaction => t !== null);
   }, [transactionsData, customCategories]);
@@ -776,7 +776,7 @@ const Transactions = () => {
         onPaidFilterChange={setPaidFilter}
         activeTab={activeTab}
         householdId={householdId ?? undefined}
-        t={t}
+        t={t as any}
         locale={locale}
         onClearFilters={() => {
           setSearchInput('');
@@ -837,7 +837,7 @@ const Transactions = () => {
           totalCount={transactionsData?.pagination?.total}
           currentCount={transactions.length}
           onLoadMore={handleLoadMore}
-          t={t}
+          t={t as any}
         />
       )}
 

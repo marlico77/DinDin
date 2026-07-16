@@ -33,9 +33,7 @@ const detectBrowser = () => {
   return "Other";
 };
 
-// Flag para garantir que as propriedades do usuário foram definidas uma vez por sessão
-let userPropertiesSet = false;
-
+// Flag removida por não estar em uso
 // Inicializa metadados básicos no cliente
 if (typeof window !== 'undefined') {
   cachedMetadata.browser = detectBrowser();

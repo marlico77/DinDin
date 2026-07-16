@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useState, useEffect, useRef, useMemo } from 'react';
-import { Wallet, CreditCard, Target, BarChart3, Shield, ArrowRight, Sun, Moon, Users } from 'lucide-react';
+import { CreditCard, Target, BarChart3, Shield, ArrowRight, Sun, Moon, Users } from 'lucide-react';
 import { useI18n, Locale } from '../context/I18nContext';
 import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';

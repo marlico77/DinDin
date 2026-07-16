@@ -93,17 +93,17 @@ const Reports = () => {
 
   // Helper to resolve category display name
   const resolveCategoryName = useCallback((categoryName: string): string => {
-    return getCategoryDisplayName(categoryName, t as unknown as Record<string, string>, custom);
+    return getCategoryDisplayName(categoryName, t as unknown as Record<string, string>, custom as any);
   }, [t, custom]);
 
   // Função auxiliar para converter transações do backend
-  const convertTransactions = useCallback((data: Transaction[] | undefined) => {
+  const convertTransactions = useCallback((data: any[] | undefined) => {
     if (!data || data.length === 0) return [];
     
     return data
       .map((t) => {
         const catName = t.categoryName || 'OTHER_EXPENSES';
-        const disp = () => getCategoryDisplayName(catName as CategoryName, t as unknown as Record<string, string>, custom);
+        const disp = () => getCategoryDisplayName(catName as CategoryName, t as unknown as Record<string, string>, custom as any);
         
         const type = (t.type === 'INCOME' || t.type === 'EXPENSE')
           ? (t.type === 'INCOME' ? TransactionType.INCOME : TransactionType.EXPENSE)
@@ -328,7 +328,7 @@ const Reports = () => {
     const monthTransactions = getTransactionsByMonth(transactions, selectedMonth);
     const expenses = monthTransactions.filter(t => {
       if (t.type !== TransactionType.EXPENSE) return false;
-      if (t.type === TransactionType.TRANSFER || t.type === TransactionType.ALLOCATION) return false;
+
       if (!t.accountId) return true;
       const account = accounts.find(a => a.id === t.accountId);
       if (account?.type === AccountType.CREDIT) return false;
@@ -362,7 +362,7 @@ const Reports = () => {
     const expenses = monthTransactions.filter(t => {
       if (!t.date) return false;
       if (t.type !== TransactionType.EXPENSE) return false;
-      if (t.type === TransactionType.TRANSFER || t.type === TransactionType.ALLOCATION) return false;
+
       if (!t.accountId) return true;
       const account = accounts.find(a => a.id === t.accountId);
       if (account?.type === AccountType.CREDIT) return false;
