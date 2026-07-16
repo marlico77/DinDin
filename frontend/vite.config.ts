@@ -50,7 +50,6 @@ export default defineConfig({
         manualChunks: {
           // Vendor chunks
           'react-vendor': ['react', 'react-dom', 'react-router-dom'],
-          'firebase-vendor': ['firebase/app', 'firebase/firestore', 'firebase/auth', 'firebase/analytics'],
           'ui-vendor': ['recharts', '@radix-ui/react-popover', 'cmdk'],
           'utils-vendor': ['date-fns', 'zod', 'react-hook-form', '@hookform/resolvers'],
         },
