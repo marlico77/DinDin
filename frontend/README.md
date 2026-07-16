@@ -6,9 +6,9 @@ Web frontend for DinDin — personal finance manager with household support. **O
 
 DinDin is an open source personal finance manager. This repository is the public web app: **anyone can self-host it**, fork it, submit pull requests, or build on top of it. Submitting PRs or contributing does **not** guarantee that any feature or change will be incorporated into the hosted product at [dindin.app](https://dindin.app). The maintainers decide what is merged here or can be shipped on dindin.app.
 
-This project is maintained by [PrimoDev](https://www.oprimo.dev).
+This project is self-hosted.
 
-**Other part of the project:** [dindin-selfhosted-backend](https://github.com/oprimodev/dindin-selfhosted-backend) — API (Node.js/Fastify).
+**Other part of the project:** [dindin-selfhosted-backend](https://github.com/marlico77/DinDin) — API (Node.js/Fastify).
 
 ## Tech stack
 

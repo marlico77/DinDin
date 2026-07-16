@@ -6,9 +6,9 @@ Backend for DinDin — personal finance app with household collaboration. **Open
 
 DinDin is an open source personal finance manager. This repository is the public backend: **anyone can self-host it**, fork it, submit pull requests, or build on top of it. Submitting PRs or contributing does **not** guarantee that any feature or change will be incorporated into the hosted product at [dindin.app](https://dindin.app). The maintainers decide what is merged and what is shipped on dindin.app.
 
-This project is maintained by [PrimoDev](https://www.oprimo.dev).
+This project is self-hosted.
 
-**Other part of the project:** [dindin-selfhosted-frontend](https://github.com/oprimodev/dindin-selfhosted-frontend) — web app (React/Vite).
+**Other part of the project:** [dindin-selfhosted-frontend](https://github.com/marlico77/DinDin) — web app (React/Vite).
 
 ## Tech stack
 

@@ -187,7 +187,7 @@ const Support = () => {
                       geralmente em até 24 horas úteis.
                     </p>
                     <p className="text-primary-600 dark:text-primary-400 font-medium mt-2">
-                      apps@oprimo.dev
+                      suporte@dindin.app
                     </p>
                   </div>
                 </div>

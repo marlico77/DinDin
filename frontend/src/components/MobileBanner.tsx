@@ -79,7 +79,7 @@ const MobileBanner = () => {
             className="w-full px-3 py-1.5 text-sm font-medium text-yellow-800 dark:text-yellow-200 bg-yellow-100/90 dark:bg-yellow-900/90 backdrop-blur-sm hover:bg-yellow-200/90 dark:hover:bg-yellow-900 rounded-md transition-colors"
             aria-label="Fechar banner"
           >
-            de boas Primo
+            Entendi
           </button>
         </div>
       </div>
