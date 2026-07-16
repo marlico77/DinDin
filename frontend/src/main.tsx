@@ -142,7 +142,7 @@ if (import.meta.env.VITE_SENTRY_DSN && !isLocalhost()) {
 }
 
 // Register Service Worker for PWA
-if ('serviceWorker' in navigator && import.meta.env.PROD) {
+if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('/sw.js')
       .then((registration) => {

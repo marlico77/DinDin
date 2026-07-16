@@ -4,6 +4,12 @@ import helmet from '@fastify/helmet';
 import rateLimit from '@fastify/rate-limit';
 import swagger from '@fastify/swagger';
 import swaggerUi from '@fastify/swagger-ui';
+import fastifyStatic from '@fastify/static';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 import { env, isProduction } from './shared/config/env.js';
 import { connectDatabase, disconnectDatabase } from './shared/db/prisma.js';
@@ -257,6 +263,13 @@ export async function buildApp(): Promise<FastifyInstance> {
 
   app.setErrorHandler(errorHandler);
 
+  // Serve Frontend Static Files
+  await app.register(fastifyStatic, {
+    root: path.join(__dirname, '../../frontend/dist'),
+    prefix: '/',
+    wildcard: false,
+  });
+
   // Protect Swagger endpoints (UI and JSON spec) with basic auth when enabled in production
   if (swaggerEnabled && env.SWAGGER_USERNAME && env.SWAGGER_PASSWORD) {
     app.addHook('onRequest', async (request, reply) => {
@@ -294,18 +307,29 @@ export async function buildApp(): Promise<FastifyInstance> {
   // ROUTES
   // ============================================================================
 
-  await app.register(authRoutes, { prefix: '/auth' });
-  await app.register(userRoutes, { prefix: '/users' });
-  await app.register(householdRoutes, { prefix: '/households' });
-  await app.register(accountRoutes, { prefix: '/accounts' });
-  await app.register(categoryRoutes, { prefix: '/categories' });
-  await app.register(transactionRoutes, { prefix: '/transactions' });
-  await app.register(budgetRoutes, { prefix: '/budgets' });
-  await app.register(savingsGoalRoutes, { prefix: '/savings-goals' });
-  await app.register(recurringTransactionRoutes, { prefix: '/recurring-transactions' });
-  await app.register(feedbackRoutes, { prefix: '/feedback' });
-  await app.register(notificationRoutes, { prefix: '/notifications' });
-  await app.register(dashboardRoutes, { prefix: '/dashboard' });
+  await app.register(async (api) => {
+    await api.register(authRoutes, { prefix: '/auth' });
+    await api.register(userRoutes, { prefix: '/users' });
+    await api.register(householdRoutes, { prefix: '/households' });
+    await api.register(accountRoutes, { prefix: '/accounts' });
+    await api.register(categoryRoutes, { prefix: '/categories' });
+    await api.register(transactionRoutes, { prefix: '/transactions' });
+    await api.register(budgetRoutes, { prefix: '/budgets' });
+    await api.register(savingsGoalRoutes, { prefix: '/savings-goals' });
+    await api.register(recurringTransactionRoutes, { prefix: '/recurring-transactions' });
+    await api.register(feedbackRoutes, { prefix: '/feedback' });
+    await api.register(notificationRoutes, { prefix: '/notifications' });
+    await api.register(dashboardRoutes, { prefix: '/dashboard' });
+  }, { prefix: '/api' });
+
+  // SPA Fallback: any unmatched route goes to index.html (except /api)
+  app.setNotFoundHandler((request, reply) => {
+    if (request.url.startsWith('/api/') || request.url === '/api' || request.url.startsWith('/docs')) {
+      reply.code(404).send({ error: 'Not Found' });
+      return;
+    }
+    reply.sendFile('index.html');
+  });
 
   return app;
 }

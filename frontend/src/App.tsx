@@ -16,7 +16,8 @@ import Layout from './components/Layout';
 import { AnalyticsTracker } from './components/AnalyticsTracker';
 import { LoadingSpinner } from './components/LoadingSpinner';
 import { VersionUpdatePrompt } from './components/VersionUpdatePrompt';
-// import { InstallPrompt } from './components/InstallPrompt'; // Desativado temporariamente
+import { Toaster } from './components/ui/toaster';
+import { InstallPrompt } from './components/InstallPrompt';
 import { MaintenanceModal } from './components/MaintenanceModal';
 import { useMaintenanceMode } from './hooks/useMaintenanceMode';
 
@@ -178,8 +179,8 @@ function AppRoutes() {
     <>
       <AnalyticsTracker />
       <VersionUpdatePrompt />
-      {/* InstallPrompt desativado temporariamente */}
-      {/* <InstallPrompt /> */}
+      <Toaster />
+      <InstallPrompt />
       <LazyLoadErrorBoundary>
         <Suspense fallback={<PageLoader />}>
           <Routes>
