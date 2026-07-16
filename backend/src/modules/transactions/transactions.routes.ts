@@ -4,7 +4,7 @@ import {
   requireHouseholdMember,
   requireEditor,
   ensurePersonalHousehold,
-  getUserByFirebaseUid,
+  getUserById,
 } from '../../shared/middleware/authorization.middleware.js';
 import {
   createTransactionSchema,
@@ -309,7 +309,7 @@ export async function transactionRoutes(app: FastifyInstance) {
     
     // Get authenticated user
     const authUser = getAuthUser(request);
-    const user = await getUserByFirebaseUid(authUser.uid, authUser.email);
+    const user = await getUserById(authUser.id);
     
     // If no householdId provided, ensure user has a personal household
     const householdId = input.householdId || await ensurePersonalHousehold(request);
@@ -980,7 +980,7 @@ export async function transactionRoutes(app: FastifyInstance) {
     async (request, reply) => {
       const { splitId } = request.params;
       const authUser = getAuthUser(request);
-      const user = await getUserByFirebaseUid(authUser.uid, authUser.email);
+      const user = await getUserById(authUser.id);
       
       const input = updateTransactionSplitSchema.parse(request.body);
 

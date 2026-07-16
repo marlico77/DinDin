@@ -1,5 +1,4 @@
-import { logEvent, setUserProperties } from 'firebase/analytics';
-import { analytics } from '../config/firebase';
+
 import { TransactionType } from '../lib/enums';
 
 // Tipo para metadados do analytics
@@ -191,33 +190,9 @@ export const logAnalyticsEvent = (
   eventName: AnalyticsEvent | string,
   eventParams?: Record<string, unknown>
 ): void => {
-  if (!analytics) {
-    // Analytics não está disponível (SSR ou não suportado)
-    return;
-  }
-
-  try {
-    // Se ainda não definimos as propriedades do usuário nesta sessão, fazemos agora
-    if (!userPropertiesSet) {
-      setUserProperties(analytics, {
-        app_version: cachedMetadata.app_version,
-        browser: cachedMetadata.browser,
-        platform: cachedMetadata.platform,
-        language: cachedMetadata.language,
-        screen_res: cachedMetadata.screen_res
-      });
-      userPropertiesSet = true;
-    }
-
-    // Mescla parâmetros do evento com metadados globais
-    const paramsWithMetadata = {
-      ...cachedMetadata,
-      ...eventParams,
-    };
-    
-    logEvent(analytics, eventName, paramsWithMetadata);
-  } catch (error) {
-    // Silenciosamente falha se analytics não estiver disponível
+  // Analytics is disabled (Firebase removed)
+  if (import.meta.env.DEV) {
+    console.log(`[Analytics] Event: ${eventName}`, eventParams);
   }
 };
 

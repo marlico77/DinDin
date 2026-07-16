@@ -30,8 +30,8 @@ export interface Translations {
   saveAndCreateNew: string;
   cancel: string;
   resetAccount: string;
-  resetRectaAccount: string;
-  resetRectaAccountDescription: string;
+  resetDinDinAccount: string;
+  resetDinDinAccountDescription: string;
   resetAccountConfirmationPhrase: string;
   resetAccountWarning: string;
   resetAccountWarningMessage: string;

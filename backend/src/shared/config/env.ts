@@ -4,11 +4,8 @@ const envSchema = z.object({
   // Database
   DATABASE_URL: z.string().url(),
 
-  // Firebase (either file path or individual credentials)
-  GOOGLE_APPLICATION_CREDENTIALS: z.string().optional(),
-  FIREBASE_PROJECT_ID: z.string().optional(),
-  FIREBASE_CLIENT_EMAIL: z.string().email().optional(),
-  FIREBASE_PRIVATE_KEY: z.string().optional(),
+  // JWT Secret for authentication
+  JWT_SECRET: z.string().min(10).default('default_jwt_secret_change_me_in_production'),
 
   // Redis
   REDIS_URL: z.string().url().optional(),
@@ -18,20 +15,17 @@ const envSchema = z.object({
   NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
 
   // Rate limiting
-  // Higher limits for development to avoid issues during development
   RATE_LIMIT_MAX: z.coerce.number().default(process.env.NODE_ENV === 'development' ? 500 : 100),
   RATE_LIMIT_WINDOW_MS: z.coerce.number().default(60000),
 
-  // Swagger Documentation (optional - if not set, Swagger is unprotected)
+  // Swagger Documentation
   SWAGGER_USERNAME: z.string().optional(),
   SWAGGER_PASSWORD: z.string().optional(),
 
-  // First run - run migrations automatically on startup (optional)
+  // First run
   FIRST_RUN: z.coerce.boolean().optional(),
   
-  // CORS - Allowed origins (comma-separated list)
-  // In production, specify allowed frontend URLs
-  // Example: "https://recta.app,https://www.recta.app,http://localhost:5173"
+  // CORS
   ALLOWED_ORIGINS: z.string().optional(),
 });
 
@@ -50,23 +44,10 @@ function validateEnv() {
     process.exit(1);
   }
 
-  // Validate Firebase credentials are provided (either file or individual)
-  // NOTE: This validation is deferred - we don't fail startup if Firebase is missing
-  // The health check should work even without Firebase
   const env = parsed.data;
-  
-  // Only validate Firebase in production or if explicitly required
-  // In Railway, we want the server to start even if Firebase config is missing initially
-  if (env.NODE_ENV === 'production') {
-    const hasCredentialsFile = !!env.GOOGLE_APPLICATION_CREDENTIALS;
-    const hasIndividualCredentials =
-      env.FIREBASE_PROJECT_ID && env.FIREBASE_CLIENT_EMAIL && env.FIREBASE_PRIVATE_KEY;
 
-    if (!hasCredentialsFile && !hasIndividualCredentials) {
-      console.warn('⚠️  Firebase credentials not provided - some features may not work');
-      console.warn('   Provide GOOGLE_APPLICATION_CREDENTIALS or all of FIREBASE_PROJECT_ID, FIREBASE_CLIENT_EMAIL, FIREBASE_PRIVATE_KEY');
-      // Don't exit - allow server to start for health checks
-    }
+  if (env.NODE_ENV === 'production' && env.JWT_SECRET === 'default_jwt_secret_change_me_in_production') {
+    console.warn('⚠️  WARNING: You are using the default JWT_SECRET in production. This is highly insecure!');
   }
 
   return env;

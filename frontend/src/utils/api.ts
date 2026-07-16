@@ -1,6 +1,4 @@
 import axios, { AxiosInstance, AxiosError, AxiosRequestConfig, InternalAxiosRequestConfig } from 'axios';
-import { auth } from '../config/firebase';
-
 // Get API base URL from environment variable or default to localhost
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000';
 
@@ -42,20 +40,10 @@ export interface PaginatedResponse<T> {
 }
 
 /**
- * Get Firebase ID token for authentication
- * Forces token refresh to ensure we have a valid token
+ * Get JWT token for authentication
  */
-async function getAuthToken(forceRefresh = false): Promise<string | null> {
-  const user = auth.currentUser;
-  if (!user) {
-    return null;
-  }
-  
-  try {
-    return await user.getIdToken(forceRefresh);
-  } catch (error) {
-    return null;
-  }
+function getAuthToken(): string | null {
+  return localStorage.getItem('token');
 }
 
 /**

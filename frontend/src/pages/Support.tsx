@@ -75,7 +75,7 @@ const Support = () => {
             <div className="space-y-6">
               <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-6 border border-gray-200 dark:border-gray-700">
                 <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-3">
-                  Como criar uma conta no Recta?
+                  Como criar uma conta no DinDin?
                 </h3>
                 <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
                   Para criar uma conta, clique em "Começar" na página inicial e siga as instruções. 
@@ -101,7 +101,7 @@ const Support = () => {
                 </h3>
                 <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
                   Acesse a página de Orçamentos e clique em "Novo Orçamento". Defina uma categoria, 
-                  o valor limite e o período (mensal, semanal, etc.). O Recta acompanhará seus gastos 
+                  o valor limite e o período (mensal, semanal, etc.). O DinDin acompanhará seus gastos 
                   e alertará quando você estiver próximo ou ultrapassar o limite.
                 </p>
               </div>
@@ -141,10 +141,10 @@ const Support = () => {
 
               <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-6 border border-gray-200 dark:border-gray-700">
                 <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-3">
-                  O Recta é gratuito?
+                  O DinDin é gratuito?
                 </h3>
                 <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
-                  Sim! Atualmente o Recta está em versão beta e é totalmente gratuito. 
+                  Sim! Atualmente o DinDin está em versão beta e é totalmente gratuito. 
                   No futuro, planejamos oferecer planos premium com recursos adicionais, 
                   mas a versão básica continuará disponível gratuitamente.
                 </p>
@@ -199,7 +199,7 @@ const Support = () => {
                       Feedback e Sugestões
                     </h3>
                     <p className="text-gray-700 dark:text-gray-300">
-                      Tem uma ideia para melhorar o Recta? Adoraríamos ouvir! Use o modal de feedback 
+                      Tem uma ideia para melhorar o DinDin? Adoraríamos ouvir! Use o modal de feedback 
                       dentro do aplicativo (disponível no menu de comandos) ou envie um e-mail.
                     </p>
                   </div>
@@ -211,7 +211,7 @@ const Support = () => {
           {/* Tips Section */}
           <section className="mb-12">
             <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-6">
-              Dicas para Usar o Recta
+              Dicas para Usar o DinDin
             </h2>
 
             <div className="grid md:grid-cols-2 gap-6">
@@ -230,7 +230,7 @@ const Support = () => {
                   🎯 Defina Metas
                 </h3>
                 <p className="text-gray-700 dark:text-gray-300 text-sm">
-                  Crie metas de economia para objetivos específicos. O Recta acompanhará seu progresso 
+                  Crie metas de economia para objetivos específicos. O DinDin acompanhará seu progresso 
                   e te ajudará a alcançar seus objetivos financeiros.
                 </p>
               </div>
@@ -262,7 +262,7 @@ const Support = () => {
       {/* Footer */}
       <footer className="bg-gray-50 dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 py-8 mt-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-sm text-gray-600 dark:text-gray-400">
-          <p>© {new Date().getFullYear()} Recta. Todos os direitos reservados.</p>
+          <p>© {new Date().getFullYear()} DinDin. Todos os direitos reservados.</p>
         </div>
       </footer>
     </div>

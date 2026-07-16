@@ -233,10 +233,10 @@ const LandingPage = () => {
     "@type": "WebPage",
     "name": t.landingSeoTitle,
     "description": t.landingSeoDescription,
-    "url": "https://recta.app",
+    "url": "https://dindin.app",
     "mainEntity": {
       "@type": "SoftwareApplication",
-      "name": "Recta",
+      "name": "DinDin",
       "applicationCategory": "FinanceApplication"
     }
   };
@@ -259,7 +259,7 @@ const LandingPage = () => {
               onClick={() => analyticsHelpers.logLandingNavClicked('logo')}
             >
               <Wallet className="h-8 w-8 text-primary-600 dark:text-primary-400 animate-pulse-slow" />
-              <span className="ml-2 text-xl font-bold text-gray-900 dark:text-gray-100">Recta</span>
+              <span className="ml-2 text-xl font-bold text-gray-900 dark:text-gray-100">DinDin</span>
             </Link>
             <div className="flex items-center space-x-4">
               {/* Desktop Language Selector */}
@@ -830,7 +830,7 @@ const LandingPage = () => {
             <div className="flex flex-col items-center md:items-start space-y-4">
               <div className="flex items-center">
                 <Wallet className="h-6 w-6 text-primary-400 mr-2" />
-                <span className="text-lg font-bold">Recta</span>
+                <span className="text-lg font-bold">DinDin</span>
               </div>
               
               {/* Language Selector in Footer */}
@@ -848,7 +848,7 @@ const LandingPage = () => {
             </div>
 
             <div className="text-sm text-center md:text-right space-y-2">
-              <p>© {new Date().getFullYear()} Recta. {t.landingFooterRights}</p>
+              <p>© {new Date().getFullYear()} DinDin. {t.landingFooterRights}</p>
               <div className="flex flex-wrap justify-center md:justify-end gap-4 text-gray-400">
                 <Link to="/support" className="hover:text-gray-300 transition-colors">
                   Suporte

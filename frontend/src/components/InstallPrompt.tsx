@@ -102,7 +102,7 @@ export const InstallPrompt = () => {
           </div>
           <div className="flex-1 min-w-0">
             <h3 className="font-semibold text-gray-900 dark:text-gray-100 text-sm">
-              {t.installApp || 'Instalar Recta'}
+              {t.installApp || 'Instalar DinDin'}
             </h3>
             <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
               {t.installAppDescription || 'Instale o app para acesso rápido e melhor experiência'}

@@ -17,8 +17,8 @@ const serviceWorkerVersionPlugin = () => {
         let swContent = readFileSync(swDistPath, 'utf-8')
         // Substituir qualquer versão (v1, v2, etc) pela versão atual do app
         swContent = swContent.replace(
-          /const CACHE_NAME = ['"]recta-[^'"]+['"];?/,
-          `const CACHE_NAME = 'recta-${APP_VERSION}';`
+          /const CACHE_NAME = ['"]dindin-[^'"]+['"];?/,
+          `const CACHE_NAME = 'dindin-${APP_VERSION}';`
         )
         writeFileSync(swDistPath, swContent, 'utf-8')
       } catch (error) {

@@ -36,7 +36,7 @@ const TermsOfService = () => {
               1. Aceitação dos Termos
             </h2>
             <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
-              Ao acessar e usar o Recta, você concorda em cumprir e estar vinculado aos seguintes termos e condições de uso. 
+              Ao acessar e usar o DinDin, você concorda em cumprir e estar vinculado aos seguintes termos e condições de uso. 
               Se você não concordar com alguma parte destes termos, não deve usar nosso serviço.
             </p>
           </section>
@@ -46,7 +46,7 @@ const TermsOfService = () => {
               2. Descrição do Serviço
             </h2>
             <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
-              O Recta é uma plataforma de gerenciamento financeiro pessoal que permite aos usuários:
+              O DinDin é uma plataforma de gerenciamento financeiro pessoal que permite aos usuários:
             </p>
             <ul className="list-disc list-inside text-gray-700 dark:text-gray-300 space-y-2 ml-4">
               <li>Registrar e acompanhar transações financeiras</li>
@@ -63,7 +63,7 @@ const TermsOfService = () => {
               3. Conta de Usuário
             </h2>
             <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
-              Para usar o Recta, você precisa criar uma conta. Você é responsável por:
+              Para usar o DinDin, você precisa criar uma conta. Você é responsável por:
             </p>
             <ul className="list-disc list-inside text-gray-700 dark:text-gray-300 space-y-2 ml-4">
               <li>Manter a confidencialidade de suas credenciais de acesso</li>
@@ -78,7 +78,7 @@ const TermsOfService = () => {
               4. Uso Aceitável
             </h2>
             <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
-              Você concorda em não usar o Recta para:
+              Você concorda em não usar o DinDin para:
             </p>
             <ul className="list-disc list-inside text-gray-700 dark:text-gray-300 space-y-2 ml-4">
               <li>Qualquer propósito ilegal ou não autorizado</li>
@@ -94,7 +94,7 @@ const TermsOfService = () => {
               5. Propriedade Intelectual
             </h2>
             <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
-              Todo o conteúdo do Recta, incluindo design, logotipos, textos, gráficos e software, é propriedade do Recta 
+              Todo o conteúdo do DinDin, incluindo design, logotipos, textos, gráficos e software, é propriedade do DinDin 
               ou de seus licenciadores e está protegido por leis de direitos autorais e outras leis de propriedade intelectual.
             </p>
           </section>
@@ -104,7 +104,7 @@ const TermsOfService = () => {
               6. Privacidade
             </h2>
             <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
-              Seu uso do Recta também é regido por nossa Política de Privacidade. 
+              Seu uso do DinDin também é regido por nossa Política de Privacidade. 
               Por favor, revise nossa Política de Privacidade para entender nossas práticas de coleta e uso de dados.
             </p>
           </section>
@@ -114,7 +114,7 @@ const TermsOfService = () => {
               7. Limitação de Responsabilidade
             </h2>
             <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
-              O Recta é fornecido "como está" e "conforme disponível". Não garantimos que:
+              O DinDin é fornecido "como está" e "conforme disponível". Não garantimos que:
             </p>
             <ul className="list-disc list-inside text-gray-700 dark:text-gray-300 space-y-2 ml-4">
               <li>O serviço será ininterrupto, seguro ou livre de erros</li>
@@ -183,7 +183,7 @@ const TermsOfService = () => {
       {/* Footer */}
       <footer className="bg-gray-50 dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 py-8 mt-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-sm text-gray-600 dark:text-gray-400">
-          <p>© {new Date().getFullYear()} Recta. Todos os direitos reservados.</p>
+          <p>© {new Date().getFullYear()} DinDin. Todos os direitos reservados.</p>
         </div>
       </footer>
     </div>

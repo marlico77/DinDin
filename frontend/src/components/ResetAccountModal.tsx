@@ -85,7 +85,7 @@ const ResetAccountModal = ({
                 <AlertTriangle className="h-5 w-5 text-red-600 dark:text-red-400" />
               </div>
               <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100">
-                {t.resetRectaAccount || 'Resetar Conta do Recta'}
+                {t.resetDinDinAccount || 'Resetar Conta do DinDin'}
               </h3>
             </div>
             <button

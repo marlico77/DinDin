@@ -92,7 +92,7 @@ export const PWAInfoModal = ({
         <div className="p-6 space-y-4">
           <p className="text-gray-600 dark:text-gray-400">
             {t.pwaInfoDescription ||
-              "Agora você pode instalar o Recta na tela inicial do seu celular ou computador para acesso rápido e melhor experiência!"}
+              "Agora você pode instalar o DinDin na tela inicial do seu celular ou computador para acesso rápido e melhor experiência!"}
           </p>
 
           <div className="space-y-3">

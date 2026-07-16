@@ -1,10 +1,9 @@
 import type { FastifyInstance } from 'fastify';
 import { authMiddleware, getAuthUser } from '../../shared/middleware/auth.middleware.js';
-import { getUserByFirebaseUid } from '../../shared/middleware/authorization.middleware.js';
+import { getUserById } from '../../shared/middleware/authorization.middleware.js';
 import { prisma } from '../../shared/db/prisma.js';
 import { NotFoundError } from '../../shared/errors/index.js';
 import {
-  getUserById,
   updateUserPreferences,
   getOrCreateReferralCode,
   deleteUser,
@@ -39,7 +38,7 @@ export async function userRoutes(app: FastifyInstance) {
     },
     async (request, reply) => {
       const authUser = getAuthUser(request);
-      const user = await getUserByFirebaseUid(authUser.uid, authUser.email);
+      const user = await getUserById(authUser.id);
 
       return reply.send({
         success: true,
@@ -81,7 +80,7 @@ export async function userRoutes(app: FastifyInstance) {
     },
     async (request, reply) => {
       const authUser = getAuthUser(request);
-      const user = await getUserByFirebaseUid(authUser.uid, authUser.email);
+      const user = await getUserById(authUser.id);
       const input = updateUserPreferencesSchema.parse(request.body);
 
       const updated = await updateUserPreferences(user.id, input);
@@ -124,7 +123,7 @@ export async function userRoutes(app: FastifyInstance) {
     },
     async (request, reply) => {
       const authUser = getAuthUser(request);
-      const user = await getUserByFirebaseUid(authUser.uid, authUser.email);
+      const user = await getUserById(authUser.id);
       const referralCode = await getOrCreateReferralCode(user.id);
       const referralCount = await getReferralCount(user.id);
 
@@ -163,10 +162,7 @@ export async function userRoutes(app: FastifyInstance) {
     },
     async (request, reply) => {
       const authUser = getAuthUser(request);
-      // Use getUserByFirebaseUid from users.service (not from authorization middleware)
-      const user = await prisma.user.findUnique({
-        where: { firebaseUid: authUser.uid },
-      });
+      const user = await getUserById(authUser.id);
       
       if (!user) {
         throw new NotFoundError('User');
@@ -206,10 +202,7 @@ export async function userRoutes(app: FastifyInstance) {
     },
     async (request, reply) => {
       const authUser = getAuthUser(request);
-      // Use findUnique instead of upsert for deletion - we don't want to create user if it doesn't exist
-      const user = await prisma.user.findUnique({
-        where: { firebaseUid: authUser.uid },
-      });
+      const user = await getUserById(authUser.id);
       
       if (!user) {
         throw new NotFoundError('User');

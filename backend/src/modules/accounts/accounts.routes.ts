@@ -4,7 +4,7 @@ import {
   requireHouseholdMember,
   requireEditor,
   ensurePersonalHousehold,
-  getUserByFirebaseUid,
+  getUserById,
 } from '../../shared/middleware/authorization.middleware.js';
 import { BadRequestError } from '../../shared/errors/index.js';
 import {
@@ -53,7 +53,7 @@ export async function accountRoutes(app: FastifyInstance) {
     
     // Get authenticated user
     const authUser = getAuthUser(request);
-    const user = await getUserByFirebaseUid(authUser.uid, authUser.email);
+    const user = await getUserById(authUser.id);
     
     // If no householdId provided, ensure user has a personal household
     const householdId = query.householdId || await ensurePersonalHousehold(request);
@@ -100,7 +100,7 @@ export async function accountRoutes(app: FastifyInstance) {
     
     // Get authenticated user
     const authUser = getAuthUser(request);
-    const user = await getUserByFirebaseUid(authUser.uid, authUser.email);
+    const user = await getUserById(authUser.id);
     
     // householdId is required for this endpoint
     if (!query.householdId) {

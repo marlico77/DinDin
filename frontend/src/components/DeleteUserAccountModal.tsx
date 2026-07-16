@@ -137,7 +137,7 @@ const DeleteUserAccountModal = ({
                 </p>
               )}
               <p className="mt-2 text-xs text-gray-500 dark:text-gray-400">
-                {t.confirmEmailHint || 'É necessário confirmar seu e-mail para deletar sua conta do Recta por segurança.'}
+                {t.confirmEmailHint || 'É necessário confirmar seu e-mail para deletar sua conta do DinDin por segurança.'}
               </p>
             </div>
           </div>

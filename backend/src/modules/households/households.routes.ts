@@ -3,7 +3,7 @@ import { authMiddleware, getAuthUser } from '../../shared/middleware/auth.middle
 import {
   requireHouseholdMember,
   requireOwner,
-  getUserByFirebaseUid,
+  getUserById,
   getUserHouseholds,
 } from '../../shared/middleware/authorization.middleware.js';
 import {
@@ -59,7 +59,7 @@ export async function householdRoutes(app: FastifyInstance) {
     },
   }, async (request, reply) => {
     const authUser = getAuthUser(request);
-    const user = await getUserByFirebaseUid(authUser.uid, authUser.email);
+    const user = await getUserById(authUser.id);
 
     const households = await getUserHouseholds(user.id);
 
@@ -97,7 +97,7 @@ export async function householdRoutes(app: FastifyInstance) {
     },
   }, async (request, reply) => {
     const authUser = getAuthUser(request);
-    const user = await getUserByFirebaseUid(authUser.uid, authUser.email);
+    const user = await getUserById(authUser.id);
     const input = createHouseholdSchema.parse(request.body);
 
     const household = await householdsService.createHousehold(user.id, input);
@@ -258,7 +258,7 @@ export async function householdRoutes(app: FastifyInstance) {
     async (request, reply) => {
       const { householdId } = householdIdParamSchema.parse(request.params);
       const authUser = getAuthUser(request);
-      const user = await getUserByFirebaseUid(authUser.uid, authUser.email);
+      const user = await getUserById(authUser.id);
 
       await requireHouseholdMember(request, householdId);
       await householdsService.leaveHousehold(householdId, user.id);
@@ -389,7 +389,7 @@ export async function householdRoutes(app: FastifyInstance) {
       await requireOwner(request, householdId);
 
       const authUser = getAuthUser(request);
-      const user = await getUserByFirebaseUid(authUser.uid, authUser.email);
+      const user = await getUserById(authUser.id);
 
       const input = inviteMemberSchema.parse(request.body);
       const invite = await householdsService.inviteMember(householdId, user.id, input);
@@ -492,7 +492,7 @@ export async function householdRoutes(app: FastifyInstance) {
     async (request, reply) => {
       const { householdId } = householdIdParamSchema.parse(request.params);
       const authUser = getAuthUser(request);
-      const user = await getUserByFirebaseUid(authUser.uid, authUser.email);
+      const user = await getUserById(authUser.id);
 
       // Verify user is a member of the household
       await requireHouseholdMember(request, householdId);
@@ -557,7 +557,7 @@ export async function householdRoutes(app: FastifyInstance) {
       await requireHouseholdMember(request, householdId);
 
       const authUser = getAuthUser(request);
-      const user = await getUserByFirebaseUid(authUser.uid, authUser.email);
+      const user = await getUserById(authUser.id);
 
       const input = updateSharedAccountIdsSchema.parse(request.body);
 
@@ -647,7 +647,7 @@ export async function householdRoutes(app: FastifyInstance) {
     async (request, reply) => {
       const { householdId } = householdIdParamSchema.parse(request.params);
       const authUser = getAuthUser(request);
-      const user = await getUserByFirebaseUid(authUser.uid, authUser.email);
+      const user = await getUserById(authUser.id);
       await requireOwner(request, householdId);
 
       const { memberId } = memberIdParamSchema
@@ -731,7 +731,7 @@ export async function householdRoutes(app: FastifyInstance) {
     },
     async (request, reply) => {
       const authUser = getAuthUser(request);
-      const user = await getUserByFirebaseUid(authUser.uid, authUser.email);
+      const user = await getUserById(authUser.id);
 
       const invites = await householdsService.getPendingInvites(user.id);
 
@@ -774,7 +774,7 @@ export async function householdRoutes(app: FastifyInstance) {
     async (request, reply) => {
       const { inviteId } = request.params;
       const authUser = getAuthUser(request);
-      const user = await getUserByFirebaseUid(authUser.uid, authUser.email);
+      const user = await getUserById(authUser.id);
 
       const member = await householdsService.acceptInvite(inviteId, user.id);
 
@@ -817,7 +817,7 @@ export async function householdRoutes(app: FastifyInstance) {
     async (request, reply) => {
       const { inviteId } = request.params;
       const authUser = getAuthUser(request);
-      const user = await getUserByFirebaseUid(authUser.uid, authUser.email);
+      const user = await getUserById(authUser.id);
 
       await householdsService.rejectInvite(inviteId, user.id);
 
@@ -953,7 +953,7 @@ export async function householdRoutes(app: FastifyInstance) {
     async (request, reply) => {
       const { inviteId } = request.params;
       const authUser = getAuthUser(request);
-      const user = await getUserByFirebaseUid(authUser.uid, authUser.email);
+      const user = await getUserById(authUser.id);
 
       await householdsService.cancelInvite(inviteId, user.id);
 

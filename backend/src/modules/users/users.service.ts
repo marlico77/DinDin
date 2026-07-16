@@ -4,40 +4,7 @@ import { prisma } from '../../shared/db/prisma.js';
 import { NotFoundError } from '../../shared/errors/index.js';
 import type { UpdateUserPreferencesInput } from './users.schema.js';
 
-/**
- * Get user by Firebase UID
- */
-export async function getUserByFirebaseUid(firebaseUid: string) {
-  const user = await prisma.user.findUnique({
-    where: { firebaseUid },
-    select: {
-      id: true,
-      firebaseUid: true,
-      email: true,
-      displayName: true,
-      isPremium: true,
-      onboardingCompleted: true,
-      onboardingRestartedAt: true,
-      theme: true,
-      baseCurrency: true,
-      locale: true,
-      country: true,
-      referralCode: true,
-      dashboardPreferences: true,
-      lastRecurringProcessedMonth: true,
-      lastRecurringProcessedAt: true,
-      preferencesUpdatedAt: true,
-      createdAt: true,
-      updatedAt: true,
-    },
-  });
 
-  if (!user) {
-    throw new NotFoundError('User');
-  }
-
-  return user;
-}
 
 /**
  * Get user by database ID
@@ -47,7 +14,6 @@ export async function getUserById(userId: string) {
     where: { id: userId },
     select: {
       id: true,
-      firebaseUid: true,
       email: true,
       displayName: true,
       isPremium: true,
@@ -113,7 +79,6 @@ export async function updateUserPreferences(
     data: updateData,
     select: {
       id: true,
-      firebaseUid: true,
       email: true,
       displayName: true,
       isPremium: true,

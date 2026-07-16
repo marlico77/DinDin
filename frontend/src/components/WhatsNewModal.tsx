@@ -108,7 +108,7 @@ export const WhatsNewModal = ({ isOpen, onClose }: WhatsNewModalProps) => {
               id="whats-new-title"
               className="text-xl font-bold text-gray-900 dark:text-gray-100"
             >
-              {t.whatsNewTitle || 'Novidades do Recta'}
+              {t.whatsNewTitle || 'Novidades do DinDin'}
             </h2>
           </div>
           {isUnderstood && hasScrolledToEnd && (
@@ -128,7 +128,7 @@ export const WhatsNewModal = ({ isOpen, onClose }: WhatsNewModalProps) => {
           className="overflow-y-auto flex-1 p-6 space-y-6"
         >
           <div className="space-y-4">
-            {/* Recta Duo: planejamento para mais de uma pessoa */}
+            {/* DinDin Duo: planejamento para mais de uma pessoa */}
             <div className="space-y-3">
               <div className="flex items-start space-x-3 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
                 <div className="p-2 bg-blue-100 dark:bg-blue-900/40 rounded-lg flex-shrink-0">
@@ -136,7 +136,7 @@ export const WhatsNewModal = ({ isOpen, onClose }: WhatsNewModalProps) => {
                 </div>
                 <div className="flex-1">
                   <h3 className="font-semibold text-gray-900 dark:text-gray-100 mb-2">
-                    {t.whatsNewTransactionsTitle || 'Recta Duo: planejamento para mais de uma pessoa'}
+                    {t.whatsNewTransactionsTitle || 'DinDin Duo: planejamento para mais de uma pessoa'}
                   </h3>
                   <ul className="space-y-2 text-sm text-gray-700 dark:text-gray-300">
                     <li className="flex items-start">
@@ -180,7 +180,7 @@ export const WhatsNewModal = ({ isOpen, onClose }: WhatsNewModalProps) => {
               </div>
             </div>
 
-            {/* Recta Web é grátis */}
+            {/* DinDin Web é grátis */}
             <div className="p-4 bg-green-50 dark:bg-green-900/20 border-2 border-green-400 dark:border-green-600 rounded-lg">
               <div className="flex items-start space-x-3">
                 <div className="p-2 bg-green-100 dark:bg-green-900/40 rounded-lg flex-shrink-0">
@@ -188,10 +188,10 @@ export const WhatsNewModal = ({ isOpen, onClose }: WhatsNewModalProps) => {
                 </div>
                 <div className="flex-1">
                   <h3 className="font-semibold text-green-900 dark:text-green-200 mb-1">
-                    {t.whatsNewMigrationTitle || 'Recta Web é grátis'}
+                    {t.whatsNewMigrationTitle || 'DinDin Web é grátis'}
                   </h3>
                   <p className="text-sm text-green-800 dark:text-green-300 leading-relaxed">
-                    {t.whatsNewMigrationText || 'O Recta Web é e continuará sendo gratuito. Sem custos ocultos.'}
+                    {t.whatsNewMigrationText || 'O DinDin Web é e continuará sendo gratuito. Sem custos ocultos.'}
                   </p>
                 </div>
               </div>

@@ -6,7 +6,6 @@ import { saveHouseholdToLocalStorage, loadHouseholdFromLocalStorage } from '../.
 export interface User {
   id: string;
   email: string;
-  firebaseUid: string;
   createdAt: string;
   households: Household[];
 }
@@ -73,58 +72,5 @@ async function retryWithBackoff<T>(
   throw lastError;
 }
 
-/**
- * Sync Firebase user with backend
- * Now creates personal household automatically if it doesn't exist
- * Includes retry logic with exponential backoff for network errors
- * Optionally accepts referralCode to process referral
- */
-export function useSyncAuth() {
-  const queryClient = useQueryClient();
-  
-  return useMutation({
-    mutationFn: async (referralCode?: string) => {
-      return retryWithBackoff(async () => {
-        // apiClient.post returns ApiResponse<T> which has structure { success: boolean, data?: T }
-        // Fastify requires an object, so send empty object if no referralCode
-        const response = await apiClient.post<{ id: string; email: string; emailVerified: boolean; createdAt: string; householdId?: string }>(
-          '/auth/sync',
-          referralCode ? { referralCode } : {}
-        );
-        
-        if (!response.success) {
-          throw new Error('Sync failed');
-        }
-        
-        // response.data is the user data object (based on logs: { id, email, householdId, ... })
-        if (!response.data) {
-          throw new Error('No data in response');
-        }
-        
-        return response.data;
-      }, 3, 1000); // 3 retries with 1s initial delay
-    },
-    onSuccess: async (data) => {
-      if (!data) {
-        return;
-      }
 
-      // IMPORTANT: Only save householdId if localStorage is empty (first-time user)
-      // Never overwrite user's existing selection - respect their choice
-      // The backend returns householdId to help first-time users, but we should not
-      // override a user's explicit selection after they've chosen a household
-      const existingHousehold = loadHouseholdFromLocalStorage();
-      if (!existingHousehold?.id && data.householdId) {
-        // Only save if there's no existing household selection (first login/signup)
-        saveHouseholdToLocalStorage(data.householdId);
-      }
-      // If existingHousehold exists, do nothing - respect user's choice
-      
-      // Invalidate and refetch auth/me to fetch updated user data including the newly created household
-      // This is safe because sync only runs on login/signup, not continuously
-      await queryClient.refetchQueries({ queryKey: ['auth', 'me'] });
-    },
-    retry: false, // We handle retries manually with exponential backoff
-  });
-}
 

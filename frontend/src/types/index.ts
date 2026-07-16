@@ -112,13 +112,17 @@ export interface SavingsGoal {
   accountId?: string;
 }
 
-import { User } from 'firebase/auth';
+export interface User {
+  id: string;
+  email: string;
+  displayName?: string;
+  isPremium?: boolean;
+}
 
 export interface AuthContextType {
   currentUser: User | null;
   signup: (email: string, password: string, referralCode?: string) => Promise<{ user: User }>;
   login: (email: string, password: string) => Promise<{ user: User }>;
-  loginWithGoogle: (referralCode?: string) => Promise<{ user: User }>;
   logout: () => Promise<void>;
 }
 

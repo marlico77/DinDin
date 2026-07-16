@@ -36,7 +36,7 @@ const PrivacyPolicy = () => {
               1. Introdução
             </h2>
             <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
-              O Recta ("nós", "nosso" ou "aplicativo") está comprometido em proteger sua privacidade. Esta Política de Privacidade 
+              O DinDin ("nós", "nosso" ou "aplicativo") está comprometido em proteger sua privacidade. Esta Política de Privacidade 
               explica como coletamos, usamos, divulgamos e protegemos suas informações quando você usa nosso serviço de gerenciamento financeiro.
             </p>
           </section>
@@ -197,7 +197,7 @@ const PrivacyPolicy = () => {
               9. Privacidade de Menores
             </h2>
             <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
-              O Recta não é destinado a menores de 18 anos. Não coletamos intencionalmente informações pessoais de menores. 
+              O DinDin não é destinado a menores de 18 anos. Não coletamos intencionalmente informações pessoais de menores. 
               Se descobrirmos que coletamos informações de um menor, tomaremos medidas para excluir essas informações imediatamente.
             </p>
           </section>
@@ -239,7 +239,7 @@ const PrivacyPolicy = () => {
       {/* Footer */}
       <footer className="bg-gray-50 dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 py-8 mt-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-sm text-gray-600 dark:text-gray-400">
-          <p>© {new Date().getFullYear()} Recta. Todos os direitos reservados.</p>
+          <p>© {new Date().getFullYear()} DinDin. Todos os direitos reservados.</p>
         </div>
       </footer>
     </div>

@@ -1,4 +1,4 @@
-const CACHE_NAME = 'recta-v1';
+const CACHE_NAME = 'dindin-v1';
 const urlsToCache = [
   '/',
   '/index.html'

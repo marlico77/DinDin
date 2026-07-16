@@ -6,7 +6,6 @@ import swagger from '@fastify/swagger';
 import swaggerUi from '@fastify/swagger-ui';
 
 import { env, isProduction } from './shared/config/env.js';
-import { initializeFirebase } from './shared/config/firebase.js';
 import { connectDatabase, disconnectDatabase } from './shared/db/prisma.js';
 import { runMigrations } from './shared/db/migrations.js';
 import { errorHandler } from './shared/errors/error-handler.js';
@@ -91,7 +90,7 @@ export async function buildApp(): Promise<FastifyInstance> {
     openapi: {
       openapi: '3.0.0',
       info: {
-        title: 'Recta API',
+        title: 'DinDin API',
         description: 'Personal finance backend with household collaboration support',
         version: '1.0.0',
       },
@@ -173,7 +172,7 @@ export async function buildApp(): Promise<FastifyInstance> {
   }
 
   // CORS
-  // Allow localhost (any port) and exact recta.app domains
+  // Allow localhost (any port) and exact dindin.app domains
   await app.register(cors, {
     origin: (origin, callback) => {
       // Allow requests with no origin (like mobile apps or curl requests)
@@ -194,11 +193,11 @@ export async function buildApp(): Promise<FastifyInstance> {
         return;
       }
       
-      // Allow only exact recta.app production domains (avoid bypass via e.g. recta.app.evil.com)
-      const allowedRectaOrigins = ['https://recta.app', 'https://www.recta.app'];
-      if (allowedRectaOrigins.includes(origin)) {
+      // Allow only exact dindin.app production domains (avoid bypass via e.g. dindin.app.evil.com)
+      const allowedDinDinOrigins = ['https://dindin.app', 'https://www.dindin.app'];
+      if (allowedDinDinOrigins.includes(origin)) {
         if (isProduction) {
-          console.log(`[CORS] Allowing recta.app origin: ${origin}`);
+          console.log(`[CORS] Allowing dindin.app origin: ${origin}`);
         }
         callback(null, true);
         return;
@@ -247,8 +246,8 @@ export async function buildApp(): Promise<FastifyInstance> {
     max: env.RATE_LIMIT_MAX,
     timeWindow: env.RATE_LIMIT_WINDOW_MS,
     keyGenerator: (request) => {
-      // Use Firebase UID if available, otherwise IP
-      return request.authUser?.uid || request.ip;
+      // Use User ID if available, otherwise IP
+      return request.authUser?.id || request.ip;
     },
   });
 
@@ -285,7 +284,7 @@ export async function buildApp(): Promise<FastifyInstance> {
 
   app.get('/', async () => {
     return {
-      name: 'Recta API',
+      name: 'DinDin API',
       version: '1.0.0',
       ...(swaggerEnabled && { documentation: '/docs', openApiSpec: '/docs/json' }),
     };
@@ -335,7 +334,7 @@ export async function startServer(): Promise<void> {
     });
 
     console.log(`
-🚀 Recta API is running!
+🚀 DinDin API is running!
    
    Port:       ${port}
    Health:     http://0.0.0.0:${port}/health
@@ -368,14 +367,7 @@ export async function startServer(): Promise<void> {
         }
       }
 
-      try {
-        console.log('🔧 Initializing Firebase...');
-        initializeFirebase();
-        console.log('✅ Firebase initialized');
-      } catch (error) {
-        console.error('⚠️  Firebase initialization failed:', error);
-        // Don't exit - server can still respond to health checks
-      }
+
 
       try {
         console.log('🔧 Connecting to database...');

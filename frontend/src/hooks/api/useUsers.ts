@@ -5,7 +5,6 @@ import { useAuth } from '../../context/AuthContext';
 export interface User {
   id: string;
   email: string;
-  firebaseUid: string;
   displayName?: string | null;
   isPremium?: boolean;
   onboardingCompleted?: boolean;
@@ -206,7 +205,7 @@ export function useResetUserAccount() {
 
 /**
  * Delete user account mutation
- * This will delete the user from the backend and Firebase Auth
+ * This will delete the user from the backend
  */
 export function useDeleteUserAccount() {
   const queryClient = useQueryClient();

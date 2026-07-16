@@ -1,6 +1,6 @@
 import type { FastifyInstance } from 'fastify';
 import { authMiddleware, getAuthUser } from '../../shared/middleware/auth.middleware.js';
-import { getUserByFirebaseUid } from '../../shared/middleware/authorization.middleware.js';
+import { getUserById } from '../../shared/middleware/authorization.middleware.js';
 import {
   listNotificationsQuerySchema,
   updateNotificationStatusSchema,
@@ -70,7 +70,7 @@ export async function notificationRoutes(app: FastifyInstance) {
     },
   }, async (request, reply) => {
     const authUser = getAuthUser(request);
-    const user = await getUserByFirebaseUid(authUser.uid, authUser.email);
+    const user = await getUserById(authUser.id);
     const query = listNotificationsQuerySchema.parse(request.query);
 
     const result = await notificationsService.getUserNotifications(user.id, query);
@@ -108,7 +108,7 @@ export async function notificationRoutes(app: FastifyInstance) {
     },
   }, async (request, reply) => {
     const authUser = getAuthUser(request);
-    const user = await getUserByFirebaseUid(authUser.uid, authUser.email);
+    const user = await getUserById(authUser.id);
 
     const count = await notificationsService.getUnreadNotificationCount(user.id);
 
@@ -165,7 +165,7 @@ export async function notificationRoutes(app: FastifyInstance) {
   }, async (request, reply) => {
     const { notificationId } = notificationIdParamSchema.parse(request.params);
     const authUser = getAuthUser(request);
-    const user = await getUserByFirebaseUid(authUser.uid, authUser.email);
+    const user = await getUserById(authUser.id);
 
     const notification = await notificationsService.getNotification(notificationId, user.id);
 
@@ -222,7 +222,7 @@ export async function notificationRoutes(app: FastifyInstance) {
       const { notificationId } = notificationIdParamSchema.parse(request.params);
       const input = updateNotificationStatusSchema.parse(request.body);
       const authUser = getAuthUser(request);
-      const user = await getUserByFirebaseUid(authUser.uid, authUser.email);
+      const user = await getUserById(authUser.id);
 
       const notification = await notificationsService.updateNotificationStatus(notificationId, user.id, input);
 
@@ -268,7 +268,7 @@ export async function notificationRoutes(app: FastifyInstance) {
     async (request, reply) => {
       const { notificationId } = notificationIdParamSchema.parse(request.params);
       const authUser = getAuthUser(request);
-      const user = await getUserByFirebaseUid(authUser.uid, authUser.email);
+      const user = await getUserById(authUser.id);
 
       const notification = await notificationsService.markNotificationAsRead(notificationId, user.id);
 
@@ -305,7 +305,7 @@ export async function notificationRoutes(app: FastifyInstance) {
     },
   }, async (request, reply) => {
     const authUser = getAuthUser(request);
-    const user = await getUserByFirebaseUid(authUser.uid, authUser.email);
+    const user = await getUserById(authUser.id);
 
     const result = await notificationsService.markAllNotificationsAsRead(user.id);
 
@@ -347,7 +347,7 @@ export async function notificationRoutes(app: FastifyInstance) {
     async (request, reply) => {
       const { notificationId } = notificationIdParamSchema.parse(request.params);
       const authUser = getAuthUser(request);
-      const user = await getUserByFirebaseUid(authUser.uid, authUser.email);
+      const user = await getUserById(authUser.id);
 
       await notificationsService.deleteNotification(notificationId, user.id);
 

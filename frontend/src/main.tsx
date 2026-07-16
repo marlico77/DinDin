@@ -25,10 +25,7 @@ if (import.meta.env.VITE_SENTRY_DSN && !isLocalhost()) {
     // Capture 100% of the transactions in production, lower in development
     tracesSampleRate: import.meta.env.PROD ? 1.0 : 0.1,
     // Set 'tracePropagationTargets' to control for which URLs distributed tracing should be enabled
-    tracePropagationTargets: [
-      /^https:\/\/.*\.firebaseapp\.com/,
-      /^https:\/\/.*\.firebaseio\.com/,
-    ],
+    tracePropagationTargets: [],
     // Environment
     environment: import.meta.env.MODE,
     // Enable logs to be sent to Sentry

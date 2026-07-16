@@ -1,14 +1,14 @@
-# Recta Web
+# DinDin Web
 
-Web frontend for Recta — personal finance manager with household support. **Open source & self-hostable.**
+Web frontend for DinDin — personal finance manager with household support. **Open source & self-hostable.**
 
 ## About this project
 
-Recta is an open source personal finance manager. This repository is the public web app: **anyone can self-host it**, fork it, submit pull requests, or build on top of it. Submitting PRs or contributing does **not** guarantee that any feature or change will be incorporated into the hosted product at [recta.app](https://recta.app). The maintainers decide what is merged here or can be shipped on recta.app.
+DinDin is an open source personal finance manager. This repository is the public web app: **anyone can self-host it**, fork it, submit pull requests, or build on top of it. Submitting PRs or contributing does **not** guarantee that any feature or change will be incorporated into the hosted product at [dindin.app](https://dindin.app). The maintainers decide what is merged here or can be shipped on dindin.app.
 
 This project is maintained by [PrimoDev](https://www.oprimo.dev).
 
-**Other part of the project:** [recta-selfhosted-backend](https://github.com/oprimodev/recta-selfhosted-backend) — API (Node.js/Fastify).
+**Other part of the project:** [dindin-selfhosted-backend](https://github.com/oprimodev/dindin-selfhosted-backend) — API (Node.js/Fastify).
 
 ## Tech stack
 
@@ -35,7 +35,7 @@ Use the same Firebase project as your backend and restrict allowed domains in th
 ### Prerequisites
 
 - Node.js 20+
-- Recta backend running (e.g. from `recta-public-backend` or your own deploy)
+- DinDin backend running (e.g. from `dindin-public-backend` or your own deploy)
 - Firebase project with Authentication enabled (same project as the backend)
 
 ### 1. Install dependencies

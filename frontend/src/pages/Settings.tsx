@@ -60,11 +60,6 @@ import {
   useDeleteCategory,
 } from "../hooks/api/useCategories";
 import { CategoryType } from "../lib/enums";
-import {
-  deleteUser,
-  GoogleAuthProvider,
-  reauthenticateWithPopup,
-} from "firebase/auth";
 
 const SettingsPage = () => {
   const { baseCurrency, setBaseCurrency, getCurrencyInfo } = useCurrency();
@@ -271,44 +266,10 @@ const SettingsPage = () => {
       }
 
       try {
-        // 1. Reautenticar o usuário antes de deletar (requisito do Firebase)
-        // Verificar se o usuário fez login com Google
-        const isGoogleUser =
-          currentUser.providerData?.some(
-            (provider) => provider.providerId === "google.com"
-          ) ?? false;
-
-        if (isGoogleUser) {
-          // Para usuários Google, fazer reautenticação com Google
-          const provider = new GoogleAuthProvider();
-          await reauthenticateWithPopup(currentUser, provider);
-        }
-        // Para usuários com email/senha, tentar deletar diretamente
-        // O Firebase pode exigir reautenticação, mas vamos tentar primeiro
-
-        // 2. Deletar conta no backend primeiro
+        // 1. Deletar conta no backend
         await deleteUserAccount.mutateAsync();
 
-        // 3. Depois deletar conta no Firebase Auth
-        // Tentar deletar - se exigir reautenticação, o erro será capturado abaixo
-        try {
-          await deleteUser(currentUser);
-        } catch (deleteError: any) {
-          // Se o Firebase exigir reautenticação recente para email/senha
-          if (
-            deleteError.code === "auth/requires-recent-login" &&
-            !isGoogleUser
-          ) {
-            showError(
-              t.requiresRecentLogin ||
-              "Por favor, faça logout e login novamente antes de deletar sua conta. Isso é necessário por segurança do Firebase."
-            );
-            return;
-          }
-          throw deleteError; // Re-lançar outros erros
-        }
-
-        // 4. Limpar cache do Service Worker
+        // 2. Limpar cache do Service Worker
         if ("caches" in window) {
           try {
             const cacheNames = await caches.keys();
@@ -330,34 +291,15 @@ const SettingsPage = () => {
 
         // Redirecionar para login será automático pelo AuthContext quando o usuário for deletado
       } catch (error: any) {
-
-        // Se o erro for de reautenticação, mostrar mensagem específica
-        if (error.code === "auth/requires-recent-login") {
-          showError(
-            t.requiresRecentLogin ||
-            "Por favor, faça login novamente antes de deletar sua conta"
-          );
-        } else if (error.code === "auth/user-mismatch") {
-          showError(
-            "Erro de autenticação. Por favor, faça logout e login novamente."
-          );
-        } else if (
-          error.code === "auth/popup-closed-by-user" ||
-          error.code === "auth/cancelled-popup-request"
-        ) {
-          // Usuário cancelou o popup do Google
-          showError(t.cancel || "Operação cancelada");
-        } else {
-          const message =
-            error?.message || "Erro ao deletar conta. Tente novamente.";
-          showError(message);
-        }
+        const message =
+          error?.message || "Erro ao deletar conta. Tente novamente.";
+        showError(message);
       }
     },
     [currentUser, deleteUserAccount, showError, t.cancel, t.emailDoesNotMatch, t.requiresRecentLogin]
   );
 
-  const handleResetRectaAccount = useCallback(
+  const handleResetDinDinAccount = useCallback(
     async () => {
       if (!currentUser) {
         showError("Usuário não está autenticado");
@@ -508,7 +450,7 @@ const SettingsPage = () => {
         </h2>
         <p className="text-sm font-light text-gray-500 dark:text-gray-400 mb-4">
           {t.pwaInfoDescription ||
-            "Instale o Recta na tela inicial do seu celular ou computador para acesso rápido e melhor experiência!"}
+            "Instale o DinDin na tela inicial do seu celular ou computador para acesso rápido e melhor experiência!"}
         </p>
 
         {isInstalled ? (
@@ -902,23 +844,23 @@ const SettingsPage = () => {
         </div>
       </div>
 
-      {/* Resetar Conta do Recta */}
+      {/* Resetar Conta do DinDin */}
       <div className="bg-white dark:bg-gray-900 border border-orange-200 dark:border-orange-800 rounded-lg p-4 sm:p-6 mb-4 sm:mb-6">
         <h2 className="text-lg sm:text-xl font-light tracking-tight text-gray-900 dark:text-white mb-4 flex items-center">
           <RefreshCcw className="h-5 w-5 mr-2 text-orange-500" />
-          {t.resetRectaAccount}
+          {t.resetDinDinAccount}
         </h2>
         <div className="space-y-4">
           <div>
             <p className="text-sm font-light text-gray-500 dark:text-gray-400 mb-4">
-              {t.resetRectaAccountDescription}
+              {t.resetDinDinAccountDescription}
             </p>
             <button
               onClick={() => setIsResetAccountModalOpen(true)}
               className="inline-flex items-center px-4 py-2.5 text-sm font-light tracking-tight text-white bg-orange-500 dark:bg-orange-500 border border-orange-500 dark:border-orange-500 rounded-md hover:opacity-80 transition-opacity"
             >
               <RefreshCcw className="h-4 w-4 mr-2" />
-              {t.resetRectaAccount}
+              {t.resetDinDinAccount}
             </button>
           </div>
         </div>
@@ -971,7 +913,7 @@ const SettingsPage = () => {
       <ResetAccountModal
         isOpen={isResetAccountModalOpen}
         onClose={() => setIsResetAccountModalOpen(false)}
-        onConfirm={handleResetRectaAccount}
+        onConfirm={handleResetDinDinAccount}
         isResetting={resetUserAccount.isPending}
       />
 

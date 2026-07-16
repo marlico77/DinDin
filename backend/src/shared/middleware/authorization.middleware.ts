@@ -33,50 +33,16 @@ function hasRoleLevel(userRole: HouseholdRole, requiredRole: HouseholdRole): boo
 }
 
 /**
- * Get user's database record from Firebase UID
- * Creates user if doesn't exist (for first login)
- * Handles case where user exists with same email but different firebaseUid
+ * Get user's database record
  */
-export async function getUserByFirebaseUid(firebaseUid: string, email: string) {
-  // Validate email - must be a non-empty string
-  if (!email || email.trim() === '') {
-    throw new Error('Email is required to create user');
-  }
-
-  const trimmedEmail = email.trim();
-
-  // First, try to find user by firebaseUid
-  let user = await prisma.user.findUnique({
-    where: { firebaseUid },
+export async function getUserById(id: string) {
+  const user = await prisma.user.findUnique({
+    where: { id },
   });
 
-  if (user) {
-    return user;
+  if (!user) {
+    throw new NotFoundError('User');
   }
-
-  // If not found by firebaseUid, check if user exists with same email
-  // This can happen if Firebase UID changed or there's data inconsistency
-  const existingUserByEmail = await prisma.user.findUnique({
-    where: { email: trimmedEmail },
-  });
-
-  if (existingUserByEmail) {
-    // Update the existing user's firebaseUid to match current Firebase auth
-    // This handles cases where Firebase UID changed or was updated
-    user = await prisma.user.update({
-      where: { id: existingUserByEmail.id },
-      data: { firebaseUid },
-    });
-    return user;
-  }
-
-  // User doesn't exist, create new one
-  user = await prisma.user.create({
-    data: {
-      firebaseUid,
-      email: trimmedEmail,
-    },
-  });
 
   return user;
 }
@@ -119,7 +85,7 @@ export async function requireHouseholdMember(
   householdId: string
 ): Promise<HouseholdMembership> {
   const authUser = getAuthUser(request);
-  const user = await getUserByFirebaseUid(authUser.uid, authUser.email);
+  const user = await getUserById(authUser.id);
 
   // Verify household exists
   const household = await prisma.household.findUnique({
@@ -219,7 +185,7 @@ export async function getUserHouseholds(userId: string) {
  */
 export async function ensurePersonalHousehold(request: FastifyRequest): Promise<string> {
   const authUser = getAuthUser(request);
-  const user = await getUserByFirebaseUid(authUser.uid, authUser.email);
+  const user = await getUserById(authUser.id);
 
   const household = await householdsService.getOrCreatePersonalHousehold(user.id, user.email);
   return household.id;
