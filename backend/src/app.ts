@@ -267,7 +267,7 @@ export async function buildApp(): Promise<FastifyInstance> {
   await app.register(fastifyStatic, {
     root: path.join(__dirname, '../../frontend/dist'),
     prefix: '/',
-    wildcard: false,
+    wildcard: true,
   });
 
   // Protect Swagger endpoints (UI and JSON spec) with basic auth when enabled in production
