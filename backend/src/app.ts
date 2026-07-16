@@ -295,7 +295,7 @@ export async function buildApp(): Promise<FastifyInstance> {
     });
   }
 
-  app.get('/', async () => {
+  app.get('/api', async () => {
     return {
       name: 'DinDin API',
       version: '1.0.0',
