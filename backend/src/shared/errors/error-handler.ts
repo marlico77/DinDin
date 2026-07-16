@@ -91,8 +91,8 @@ export function errorHandler(
     success: false,
     error: {
       code: 'INTERNAL_ERROR',
-      message: isProduction ? 'An unexpected error occurred' : error.message,
-      ...(!isProduction && { stack: error.stack }),
+      message: error.message || 'An unexpected error occurred',
+      stack: error.stack,
     },
   };
   reply.status(500).send(response);
