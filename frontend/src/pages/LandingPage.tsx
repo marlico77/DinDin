@@ -258,7 +258,7 @@ const LandingPage = () => {
               className="flex items-center hover:scale-105 transition-transform duration-200"
               onClick={() => analyticsHelpers.logLandingNavClicked('logo')}
             >
-              <Wallet className="h-8 w-8 text-primary-600 dark:text-primary-400 animate-pulse-slow" />
+              <img src="/logo.png" alt="DinDin Logo" className="h-8 w-auto object-contain animate-pulse-slow" />
               <span className="ml-2 text-xl font-bold text-gray-900 dark:text-gray-100">DinDin</span>
             </Link>
             <div className="flex items-center space-x-4">
@@ -358,7 +358,7 @@ const LandingPage = () => {
                       <p className="text-sm text-gray-700 dark:text-gray-300">{t.landingTotalBalance}</p>
                       <p className="text-xl lg:text-2xl font-bold text-gray-900 dark:text-gray-100">{formatCurrency(12450, baseCurrency)}</p>
                     </div>
-                    <Wallet className="h-7 w-7 lg:h-8 lg:w-8 text-primary-600 dark:text-primary-400 animate-pulse-slow flex-shrink-0" />
+                    <img src="/logo.png" alt="DinDin Logo" className="h-8 lg:h-10 w-auto object-contain animate-pulse-slow flex-shrink-0" />
                   </div>
                   <div className="grid grid-cols-2 gap-4">
                     <div className="p-4 bg-green-50 dark:bg-green-900/20 rounded-lg hover:scale-105 transition-transform duration-200 hover:shadow-md">
@@ -829,7 +829,7 @@ const LandingPage = () => {
           <div className="flex flex-col md:flex-row justify-between items-center space-y-6 md:space-y-0">
             <div className="flex flex-col items-center md:items-start space-y-4">
               <div className="flex items-center">
-                <Wallet className="h-6 w-6 text-primary-400 mr-2" />
+                <img src="/logo.png" alt="DinDin Logo" className="h-6 w-auto object-contain mr-2" />
                 <span className="text-lg font-bold">DinDin</span>
               </div>
               

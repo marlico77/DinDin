@@ -174,13 +174,13 @@ const Layout = () => {
           <div className={`flex items-center justify-between h-16 border-b border-gray-100 dark:border-gray-800 ${sidebarCollapsed ? 'px-4' : 'px-6'}`}>
             {!sidebarCollapsed && (
               <Link to="/home" className="flex items-center hover:opacity-80 transition-opacity">
-                <Wallet className="h-8 w-8 text-primary-600" />
+                <img src="/logo.png" alt="DinDin Logo" className="h-8 w-auto object-contain" />
                 <span className="ml-2 text-xl font-light text-gray-900 dark:text-white">{t.appNameWithBeta}</span>
               </Link>
             )}
             {sidebarCollapsed && (
               <Link to="/home" className="flex items-center justify-center hover:opacity-80 transition-opacity">
-                <Wallet className="h-8 w-8 text-primary-600" />
+                <img src="/logo.png" alt="DinDin Logo" className="h-8 w-auto object-contain" />
               </Link>
             )}
             <div className="flex items-center gap-2">

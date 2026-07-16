@@ -120,7 +120,7 @@ const Login = () => {
       <div className="max-w-md w-full space-y-8 bg-white dark:bg-gray-800 p-8 rounded-lg shadow-xl">
         <div className="text-center">
           <div className="flex justify-center">
-            <Wallet className="h-12 w-12 text-primary-600 dark:text-primary-400" />
+            <img src="/logo.png" alt="DinDin Logo" className="h-16 w-auto object-contain" />
           </div>
           <h2 className="mt-6 text-3xl font-extrabold text-gray-900 dark:text-gray-100">
             {isLogin ? t.loginTitle : t.signupTitle}
