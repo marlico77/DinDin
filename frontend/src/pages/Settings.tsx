@@ -65,7 +65,7 @@ const SettingsPage = () => {
   const { baseCurrency, setBaseCurrency, getCurrencyInfo } = useCurrency();
   const { locale, setLocale, t } = useI18n();
   const { theme, toggleTheme } = useTheme();
-  const { success, error: showError } = useToastContext();
+  const { success, error: showError, info } = useToastContext();
   const { currentUser } = useAuth();
   const { referralCount, getInviteLink } = useReferral();
   const { install, isInstalled, canInstall } = usePWAInstall();
@@ -479,7 +479,22 @@ const SettingsPage = () => {
               </button>
             ) : (
               <div className="space-y-3">
-                <div className="flex items-start space-x-3 p-3 border border-gray-100 dark:border-gray-800 rounded-lg">
+                <button
+                  type="button"
+                  onClick={async () => {
+                    if (canInstall) {
+                      const installed = await install();
+                      if (installed) {
+                        success(t.installApp || "App instalado com sucesso!");
+                      }
+                    } else {
+                      if (info) {
+                        info("Seu navegador requer a instalação manual pelo menu.");
+                      }
+                    }
+                  }}
+                  className="w-full text-left flex items-start space-x-3 p-3 border border-gray-100 dark:border-gray-800 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors cursor-pointer"
+                >
                   <Smartphone className="h-5 w-5 text-primary-600 dark:text-primary-400 flex-shrink-0 mt-0.5" />
                   <div>
                     <h3 className="font-medium text-gray-900 dark:text-white text-sm mb-1">
@@ -490,9 +505,24 @@ const SettingsPage = () => {
                         'Toque no menu do navegador e selecione "Adicionar à tela inicial"'}
                     </p>
                   </div>
-                </div>
+                </button>
 
-                <div className="flex items-start space-x-3 p-3 border border-gray-100 dark:border-gray-800 rounded-lg">
+                <button
+                  type="button"
+                  onClick={async () => {
+                    if (canInstall) {
+                      const installed = await install();
+                      if (installed) {
+                        success(t.installApp || "App instalado com sucesso!");
+                      }
+                    } else {
+                      if (info) {
+                        info("Seu navegador requer a instalação manual pelo menu.");
+                      }
+                    }
+                  }}
+                  className="w-full text-left flex items-start space-x-3 p-3 border border-gray-100 dark:border-gray-800 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors cursor-pointer"
+                >
                   <Monitor className="h-5 w-5 text-primary-600 dark:text-primary-400 flex-shrink-0 mt-0.5" />
                   <div>
                     <h3 className="font-medium text-gray-900 dark:text-white text-sm mb-1">
@@ -503,7 +533,7 @@ const SettingsPage = () => {
                         "Clique no ícone de instalação na barra de endereços ou no menu do navegador"}
                     </p>
                   </div>
-                </div>
+                </button>
               </div>
             )}
           </div>
