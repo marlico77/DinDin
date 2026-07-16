@@ -154,7 +154,6 @@ const Layout = () => {
     { path: "/app/budgets", label: t.budgets, icon: Target },
     { path: "/app/reports", label: t.reports, icon: Wallet },
     { path: "/app/settings", label: t.settings, icon: Settings },
-    { path: "https://www.reddit.com/r/DinDinApp/", label: t.community, icon: MessageSquare, external: true },
   ];
 
   return (
