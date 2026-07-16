@@ -230,7 +230,7 @@ const Accounts = () => {
             description: t.description,
             amount: typeof t.amount === 'string' ? parseFloat(t.amount) : Number(t.amount),
             type: t.type === 'TRANSFER' ? TransactionType.TRANSFER : TransactionType.ALLOCATION,
-            category: getCategoryDisplayName(categoryName, t as Record<string, string>, customCategories),
+            category: getCategoryDisplayName(categoryName, t as Record<string, string>, customCategories as any),
             date: parsedDate,
             paid: t.paid,
             accountId: t.accountId,
@@ -243,7 +243,7 @@ const Accounts = () => {
             installmentNumber: t.installmentNumber,
             totalInstallments: t.totalInstallments,
             notes: t.notes,
-          };
+          } as unknown as Transaction;
         }
         
         // Use type from backend first, fallback to categoryName inference
@@ -272,7 +272,7 @@ const Accounts = () => {
           description: t.description,
           amount: typeof t.amount === 'string' ? parseFloat(t.amount) : Number(t.amount),
           type: transactionType,
-          category: t.categoryName ? getCategoryDisplayName(t.categoryName as CategoryName, t as Record<string, string>, customCategories) : '',
+          category: t.categoryName ? getCategoryDisplayName(t.categoryName as CategoryName, t as Record<string, string>, customCategories as any) : '',
           date: parsedDate,
           paid: t.paid,
           accountId: t.accountId,
@@ -285,7 +285,7 @@ const Accounts = () => {
           installmentNumber: t.installmentNumber,
           totalInstallments: t.totalInstallments,
           notes: t.notes,
-        };
+        } as unknown as Transaction;
       })
       .filter((t): t is Transaction => t !== null);
   }, [transactionsData, customCategories]);
@@ -690,9 +690,9 @@ const Accounts = () => {
         }}
         baseCurrency={baseCurrency}
         selectedMonth={selectedMonth}
-        householdMembers={householdMembers}
+        householdMembers={householdMembers as any}
         currentUserId={currentUser?.id}
-        t={t}
+        t={t as any}
       />
 
       {/* Resumo Consolidado */}
@@ -741,7 +741,7 @@ const Accounts = () => {
                   mode: "deallocate",
                 });
               }}
-              t={t}
+              t={t as any}
             />
           </div>
 
@@ -822,7 +822,7 @@ const Accounts = () => {
                     totalCount={transactionsData?.pagination?.total}
                     currentCount={transactions.length}
                     onLoadMore={handleLoadMore}
-                    t={t}
+                    t={t as any}
                   />
                 )}
               </div>

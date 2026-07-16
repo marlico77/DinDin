@@ -145,7 +145,7 @@ const CreditCards = () => {
   }, [locale]);
 
   const creditCards = useMemo(() => {
-    return accounts.filter((account) => account.type === AccountType.CREDIT || account.type === "CREDIT");
+    return accounts.filter((account) => account.type === AccountType.CREDIT || (account.type as any) === "CREDIT");
   }, [accounts]);
 
   // Selecionar o primeiro cartão se nenhum estiver selecionado
@@ -162,22 +162,22 @@ const CreditCards = () => {
 
   // Helper function to convert backend transaction to frontend format
   const convertTransaction = useMemo(() => {
-    return (t: { id: string; description: string; amount: number | string; categoryName?: string; type?: string; date: string | Date; paid: boolean; accountId?: string; recurringTransactionId?: string; attachmentUrl?: string; installmentId?: string; installmentNumber?: number; totalInstallments?: number }): Transaction | null => {
+    return (txn: { id: string; description: string; amount: number | string; categoryName?: string; type?: string; date: string | Date; paid: boolean; accountId?: string; recurringTransactionId?: string; attachmentUrl?: string; installmentId?: string; installmentNumber?: number; totalInstallments?: number }): Transaction | null => {
       // Use type from backend first, fallback to categoryName inference
       let transactionType: TransactionType;
-      if (t.type === 'INCOME' || t.type === 'EXPENSE' || t.type === 'TRANSFER' || t.type === 'ALLOCATION') {
-        transactionType = t.type as TransactionType;
+      if (txn.type === 'INCOME' || txn.type === 'EXPENSE' || txn.type === 'TRANSFER' || txn.type === 'ALLOCATION') {
+        transactionType = txn.type as TransactionType;
       } else {
         // Fallback: infer from categoryName if type is not available
         const incomeCategories = ['SALARY', 'FREELANCE', 'INVESTMENTS', 'SALES', 'RENTAL_INCOME', 'OTHER_INCOME'];
-        const isIncome = t.categoryName && incomeCategories.includes(t.categoryName);
+        const isIncome = txn.categoryName && incomeCategories.includes(txn.categoryName);
         transactionType = isIncome ? TransactionType.INCOME : TransactionType.EXPENSE;
       }
       
       // Parse and validate date
       let parsedDate: Date;
       try {
-        parsedDate = parseDateFromAPI(t.date);
+        parsedDate = parseDateFromAPI(txn.date);
         // Validate date
         if (isNaN(parsedDate.getTime())) {
           return null; // Skip invalid transactions
@@ -187,20 +187,20 @@ const CreditCards = () => {
       }
       
       return {
-        id: t.id,
-        description: t.description,
-        amount: typeof t.amount === 'string' ? parseFloat(t.amount) : Number(t.amount),
+        id: txn.id,
+        description: txn.description,
+        amount: typeof txn.amount === 'string' ? parseFloat(txn.amount) : Number(txn.amount),
         type: transactionType,
-        category: t.categoryName ? getCategoryDisplayName(t.categoryName as CategoryName, t as Record<string, string>) : '',
+        category: txn.categoryName ? getCategoryDisplayName(txn.categoryName as CategoryName, t as any) : '',
         date: parsedDate,
-        paid: t.paid,
-        accountId: t.accountId,
-        recurringTransactionId: t.recurringTransactionId,
-        attachmentUrl: t.attachmentUrl,
-        installmentId: t.installmentId,
-        installmentNumber: t.installmentNumber,
-        totalInstallments: t.totalInstallments,
-      };
+        paid: txn.paid,
+        accountId: txn.accountId,
+        recurringTransactionId: txn.recurringTransactionId,
+        attachmentUrl: txn.attachmentUrl,
+        installmentId: txn.installmentId,
+        installmentNumber: txn.installmentNumber,
+        totalInstallments: txn.totalInstallments,
+      } as unknown as Transaction;
     };
   }, []);
 
@@ -675,7 +675,7 @@ const CreditCards = () => {
       </div>
 
       {/* Componente de resumo consolidado de todos os cartões */}
-      <CreditCardsSummary selectedMonth={selectedMonth} />
+      <CreditCardsSummary />
 
       {selectedAccount && cardDetails ? (
         <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
@@ -983,7 +983,7 @@ const CreditCards = () => {
                             }
                           }}
                           variant="secondary"
-                          disabled={loadMoreInvoiceMutation.isPending}
+                          {...{ disabled: loadMoreInvoiceMutation.isPending }}
                         >
                           {loadMoreInvoiceMutation.isPending ? t.loading : "Carregar mais"}
                         </PageButton>
@@ -1095,7 +1095,7 @@ const CreditCards = () => {
                     options={[
                       { value: '', label: t.selectAccount },
                       ...accounts
-                        .filter((acc) => acc.type !== AccountType.CREDIT && acc.type !== "CREDIT")
+                        .filter((account) => account.type !== AccountType.CREDIT && (account.type as any) !== "CREDIT")
                         .map((acc) => ({
                           value: acc.id || '',
                           label: acc.name

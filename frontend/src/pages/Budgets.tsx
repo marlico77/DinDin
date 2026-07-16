@@ -159,14 +159,14 @@ const Budgets = () => {
       </PageHeader>
 
       <BudgetList
-        budgets={budgetStatus}
+        budgets={budgetStatus as any}
         baseCurrency={baseCurrency}
         onEdit={(budget) => {
           setEditingBudget(budget);
           setIsModalOpen(true);
         }}
         onDelete={handleDelete}
-        t={t}
+        t={t as any}
       />
 
       <BudgetModal

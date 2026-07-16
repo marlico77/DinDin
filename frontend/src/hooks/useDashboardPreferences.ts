@@ -67,7 +67,7 @@ export const useDashboardPreferences = () => {
     if (!currentUser) return;
 
     await updatePreferences.mutateAsync({
-      dashboardPreferences: newPreferences,
+      dashboardPreferences: newPreferences as any,
     });
     setPreferences(newPreferences);
   }, [currentUser, updatePreferences]);

@@ -301,7 +301,7 @@ const Dashboard = () => {
         totalIncome={totalIncome}
         totalExpense={totalExpense}
         categoryData={categoryData}
-        t={t}
+        t={t as any}
       />
     );
   };
@@ -348,7 +348,7 @@ const Dashboard = () => {
           onPeriodFilter={handlePeriodFilter}
           onBackToCurrentMonth={handleBackToCurrentMonth}
           isCurrentMonth={isCurrentMonth}
-          t={t}
+          t={t as any}
         />
       </div>
 

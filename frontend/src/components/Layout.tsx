@@ -15,7 +15,6 @@ import {
   PiggyBank,
   User,
   Settings,
-  MessageSquare,
   MessageCircle,
   ChevronLeft,
   ChevronRight,
