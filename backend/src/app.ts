@@ -201,9 +201,9 @@ export async function buildApp(): Promise<FastifyInstance> {
       
       // Allow only exact dindin.app production domains (avoid bypass via e.g. dindin.app.evil.com)
       const allowedDinDinOrigins = ['https://dindin.app', 'https://www.dindin.app'];
-      if (allowedDinDinOrigins.includes(origin)) {
+      if (allowedDinDinOrigins.includes(origin) || origin.endsWith('.railway.app') || origin.endsWith('.up.railway.app')) {
         if (isProduction) {
-          console.log(`[CORS] Allowing dindin.app origin: ${origin}`);
+          console.log(`[CORS] Allowing production origin: ${origin}`);
         }
         callback(null, true);
         return;
