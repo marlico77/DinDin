@@ -2705,7 +2705,7 @@ export async function guessCategories(householdId: string, descriptions: string[
           "TRANSFER"
         ]
         Descriptions: ${JSON.stringify(descriptions)}
-        Return only the JSON object, nothing else.
+        Return only the JSON object, nothing else. Example: {"Uber": "TRANSPORTATION", "Mcdonalds": "FOOD"}
       `;
       
       const response = await fetch(`${process.env.AI_API_URL}/chat/completions`, {
@@ -2726,7 +2726,19 @@ export async function guessCategories(householdId: string, descriptions: string[
 
       const data = await response.json();
       let text = data.choices[0].message.content;
-      text = text.replace(/^```json\s*/i, '').replace(/\s*```$/i, '');
+      
+      // Attempt to extract JSON from markdown or raw text
+      const jsonMatch = text.match(/```(?:json)?\s*([\s\S]*?)\s*```/i);
+      if (jsonMatch) {
+        text = jsonMatch[1];
+      } else {
+        const start = text.indexOf('{');
+        const end = text.lastIndexOf('}');
+        if (start !== -1 && end !== -1 && end > start) {
+          text = text.substring(start, end + 1);
+        }
+      }
+      
       const parsed = JSON.parse(text);
       
       if (parsed && typeof parsed === 'object') {
