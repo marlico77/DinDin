@@ -1,5 +1,5 @@
 import { Prisma } from '../../generated/prisma/client.js';
-import { GoogleGenerativeAI } from '@google/generative-ai';
+
 import { prisma } from '../../shared/db/prisma.js';
 import { NotFoundError, BadRequestError, ForbiddenError } from '../../shared/errors/index.js';
 import {
@@ -2690,14 +2690,8 @@ export async function createDeallocation(input: {
 
 
 export async function guessCategories(householdId: string, descriptions: string[]) {
-  if (process.env.GEMINI_API_KEY && descriptions.length > 0) {
+  if (process.env.AI_API_URL && descriptions.length > 0) {
     try {
-      const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-      const model = genAI.getGenerativeModel({ 
-        model: "gemini-2.0-flash",
-        generationConfig: { responseMimeType: "application/json" }
-      });
-      
       const prompt = `
         You are an expert financial categorization assistant for a Brazilian personal finance app. 
         Given the following list of transaction descriptions (many in Portuguese, like 'Pix', 'Compra no debito', 'Uber', 'Mcdonalds', 'SPT', 'AUTOPASS', etc), 
@@ -2711,10 +2705,27 @@ export async function guessCategories(householdId: string, descriptions: string[
           "TRANSFER"
         ]
         Descriptions: ${JSON.stringify(descriptions)}
+        Return only the JSON object, nothing else.
       `;
       
-      const result = await model.generateContent(prompt);
-      let text = result.response.text();
+      const response = await fetch(`${process.env.AI_API_URL}/chat/completions`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${process.env.AI_API_KEY || "ollama"}`
+        },
+        body: JSON.stringify({
+          model: process.env.AI_MODEL_ID || "qwen2.5:0.5b",
+          messages: [{ role: "user", content: prompt }]
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error(`AI API error: ${response.statusText}`);
+      }
+
+      const data = await response.json();
+      let text = data.choices[0].message.content;
       text = text.replace(/^```json\s*/i, '').replace(/\s*```$/i, '');
       const parsed = JSON.parse(text);
       
@@ -2722,7 +2733,7 @@ export async function guessCategories(householdId: string, descriptions: string[
         return parsed;
       }
     } catch (e) {
-      console.error("Gemini classification failed, falling back to local algorithm:", e);
+      console.error("AI classification failed, falling back to local algorithm:", e);
     }
   }
 
