@@ -2708,6 +2708,9 @@ export async function guessCategories(householdId: string, descriptions: string[
         Return only the JSON object, nothing else. Example: {"Uber": "TRANSPORTATION", "Mcdonalds": "FOOD"}
       `;
       
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 15000);
+
       const response = await fetch(`${process.env.AI_API_URL}/chat/completions`, {
         method: "POST",
         headers: {
@@ -2717,8 +2720,11 @@ export async function guessCategories(householdId: string, descriptions: string[
         body: JSON.stringify({
           model: process.env.AI_MODEL_ID || "qwen2.5:0.5b",
           messages: [{ role: "user", content: prompt }]
-        })
+        }),
+        signal: controller.signal
       });
+
+      clearTimeout(timeoutId);
 
       if (!response.ok) {
         throw new Error(`AI API error: ${response.statusText}`);
